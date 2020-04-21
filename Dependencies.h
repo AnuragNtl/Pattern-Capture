@@ -7,8 +7,11 @@
 
 using namespace std;
 
-#define PROVIDER_METHOD_NAME "fetchDependency"
+#define PROVIDER_METHOD_NAME "getDependency"
 #define TYPE_LISTER_METHOD_NAME "getDependencyTypes"
+
+#define PLUGINS_DIRECTORY "lib/"
+#define LIB_EXTENSION ".so"
 
 namespace PatternCapture {
   class DependencyManager {
@@ -32,26 +35,23 @@ namespace PatternCapture {
     const char* what() const noexcept;
   };
 
-  enum PatternCaptureLevel {
-    CAPTURE, EXTRACT, TRANSFORM, TRANSFER;
-  };
   class Dependency {
     public:
       virtual string getId() const = 0;
-      virtual PatternCaptureLevel getLevel() const = 0;
+      virtual void* operator()(void *input) { return NULL; }
   };
-  struct DependencyKey { string dependencyName;
+  struct DependencyKey {
+    string dependencyName;
     string dependencyId;
     DependencyKey(string, string);
     bool operator<(const DependencyKey &) const;
   };
-  map<DependencyKey, Dependency> dependencyTypeWiseTable;
+  extern map<DependencyKey, Dependency *> dependencyTypeWiseTable;
   Dependency* getDependency(string type, string id);
   void initialize();
   bool isValidLib(string libName);
   Dependency* loadDependencyFromFile(string fileName, string);
+  ostream& operator<<(ostream &out, const DependencyKey &dependencyKey); 
 };
-
-
 #endif
 

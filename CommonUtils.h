@@ -4,23 +4,16 @@
 
 #include <vector>
 #include <string>
+#include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
 using namespace boost::filesystem;
 
 namespace PatternCapture {
-  vector<string> listDirectory(string directory) {
-    if(!is_directory(directory)) {
-      throw exception;
-    }
-    vector<string> contents;
-    path directoryPath(directory);
-    for(auto it = directory_iterator(directoryPath); it != directory_iterator(); it++) {
-      contents.push_back(it->path().filename().string());
-    }
-  }
+  vector<string> listDirectory(string);
 };
-
 #endif
 

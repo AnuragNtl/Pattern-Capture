@@ -18,7 +18,7 @@ return target;
 void* DependencyManager :: loadDependency(void *dependencyHandle, const char*dependencyName) {
   void *provider = dlsym(dependencyHandle, PROVIDER_METHOD_NAME);
   if(provider == NULL) {
-    throw DependencyException("No provider found");
+    throw DependencyException(string("No provider found: ") + dlerror());
   }
   return provider;
 }
@@ -26,6 +26,9 @@ void* DependencyManager :: loadDependency(void *dependencyHandle, const char*dep
 void* DependencyManager :: getOpenHandle(string fileName) {
   if(openHandles.find(fileName) == openHandles.end()) {
   void *handle = dlopen(fileName.c_str(), RTLD_NOW);
+  if(handle == NULL) {
+    throw DependencyException("Cannot read " + fileName + string(" ") + dlerror());
+  } 
   openHandles.insert(pair<string, void *>(fileName, handle));
   }
   return openHandles[fileName];
@@ -35,7 +38,7 @@ vector<string> DependencyManager :: getAllSupportedDependencyTypes(string fileNa
     void *handle = getOpenHandle(fileName);
     void *listerHandle = dlsym(handle, TYPE_LISTER_METHOD_NAME);
     if(listerHandle == NULL) {
-     throw DependencyException("No listing found in library " + fileName); 
+     throw DependencyException("No listing found in library " + fileName + ":" + dlerror()); 
     }
     vector<string> (*hook)() = (vector<string>(*)()) listerHandle;
     return (*hook)();
@@ -59,35 +62,37 @@ bool DependencyKey :: operator<(const DependencyKey &other) const {
   }
 }
 
-#define PLUGINS_DIRECTORY "libs/"
-#define LIB_EXTENSION ".so"
 
 namespace PatternCapture {
+  map<DependencyKey, Dependency*> dependencyTypeWiseTable;
   DependencyManager dependencyManager;
   void initialize() {
-    vector<string> libList = listDirectory
-      (PLUGINS_DIRECTORY);
+    vector<string> libList = listDirectory(PLUGINS_DIRECTORY);
     for_each(libList.begin(), libList.end(), [](string lib) {
-       if(!isValidLib(lib)) {
+        if(!isValidLib(lib)) {
        return;
        }
        string libPath = PLUGINS_DIRECTORY + lib;
        vector<string> supportedDependencyTypes = dependencyManager.getAllSupportedDependencyTypes(libPath);
-       for_each(supportedDependencyTypes.begin(), supportedDependencyTypes.end(), [libPath](string dependencyName)) {
+       for_each(supportedDependencyTypes.begin(), supportedDependencyTypes.end(), [libPath] (string dependencyName) {
         Dependency *dependency = loadDependencyFromFile(libPath, dependencyName);
-        dependencyTypeWiseTable[DependencyKey(dependencyName, dependency.getId())] = dependency;
+        dependencyTypeWiseTable[DependencyKey(dependencyName, dependency->getId())] = dependency;
        });
         });
   }
 
   bool isValidLib(string libName) {
     string libExtension = LIB_EXTENSION;
-    return libName.compare(libExtension, libName.size() - libExtension.size(), libExtension.size());
+    return libName.compare(libName.size() - libExtension.size(), libExtension.size(), libExtension) == 0;
   }
 
   Dependency* loadDependencyFromFile(string fileName, string dependencyName) {
-    return dependencyManager.loadDependency<Dependency>(dependenyName);
+    return dependencyManager.loadDependency<Dependency>(fileName, dependencyName);
+  }
+
+  ostream& operator<<(ostream &out, const DependencyKey &dependencyKey) {
+    out << dependencyKey.dependencyName << " " << dependencyKey.dependencyId;
+    return out;
   }
 };
-
 
