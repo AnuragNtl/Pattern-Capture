@@ -5,6 +5,7 @@
 using namespace PatternCapture;
 
 
+
 template<class Target>
 Target* DependencyManager :: loadDependency(string fileName, string dependencyName) {
  void *handle = getOpenHandle(fileName);
@@ -73,7 +74,10 @@ namespace PatternCapture {
        return;
        }
        string libPath = PLUGINS_DIRECTORY + lib;
-       vector<string> supportedDependencyTypes = dependencyManager.getAllSupportedDependencyTypes(libPath);
+       vector<string> supportedDependencyTypes;
+       try {
+        supportedDependencyTypes = dependencyManager.getAllSupportedDependencyTypes(libPath);
+       } catch(DependencyException &e) {}
        for_each(supportedDependencyTypes.begin(), supportedDependencyTypes.end(), [libPath] (string dependencyName) {
         Dependency *dependency = loadDependencyFromFile(libPath, dependencyName);
         dependencyTypeWiseTable[DependencyKey(dependencyName, dependency->getId())] = dependency;

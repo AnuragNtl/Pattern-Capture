@@ -16,6 +16,7 @@ vector<string> getDependencyTypes() {
 }
 
 Dependency* getDependency(const char *dependencyName) {
+
   return new SampleCapture;
 }
 
@@ -25,4 +26,6 @@ int& SampleCapture :: capture(char *input[]) {
   *p = 6;
   return *p;
 }
+
+
 

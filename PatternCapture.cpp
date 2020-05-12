@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
       });
   Dependency *dependency = dependencyTypeWiseTable[DependencyKey("sampleCapture", "sample capture")];
   cout << dependency->getId() <<"\n";
-  (*dependency)(NULL);
+  cout << *((int *)(*dependency)(NULL)) <<"\n";
   return 0;
 }
 
