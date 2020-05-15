@@ -43,9 +43,14 @@ namespace PatternCapture {
   }
 
   void Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, vector<string> inputParams) {
+    set<Node*> acceptsFromSet;
+    transform(acceptsFrom.begin(), acceptsFrom.end(), acceptsFromSet.begin(), 
+        [this](string nodeId) {
+        return nodeIdWiseMap[nodeId];
+        });
   }
 
-  void Graph :: removeNode(Node *node) {
+  void Graph :: removeNode(string) {
     
   }
 };
