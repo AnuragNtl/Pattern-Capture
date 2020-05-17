@@ -3,7 +3,7 @@
 
 namespace PatternCapture {
 
-  Node :: Node(string id, string type, string dependencyId, set<Node *> acceptsFromNodes, vector<string> inputParams, bool isRoot) : id(id), type(type), dependencyId(dependencyId), acceptsFromNodes(acceptsFromNodes), inputParams(inputParams), isRoot(isRoot) {
+  Node :: Node(string id, string type, string dependencyId, set<Node *> acceptsFromNodes, vector<string> inputParams, bool isRoot) : id(id), type(type), dependencyId(dependencyId), acceptsFromNodes(acceptsFromNodes), isRoot(isRoot), inputParams(inputParams) {
     addAcceptsFromNodes();
   }
 
@@ -43,15 +43,41 @@ namespace PatternCapture {
   }
 
   void Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, vector<string> inputParams) {
-    set<Node*> acceptsFromSet;
-    transform(acceptsFrom.begin(), acceptsFrom.end(), acceptsFromSet.begin(), 
-        [this](string nodeId) {
+   set<Node*> acceptsFromNodes;
+    transform(acceptsFrom.begin(), acceptsFrom.end(), inserter(acceptsFromNodes, acceptsFromNodes.begin()), 
+        [this] (string nodeId) {
         return nodeIdWiseMap[nodeId];
         });
+    bool isRoot = acceptsFromNodes.size() == 0;
+    Node *node = new Node(id, type, dependencyId, acceptsFromNodes, inputParams, isRoot);
+    nodeIdWiseMap[id] = node;
+    if(isRoot) {
+      rootNodes.insert(node);
+    }
   }
 
-  void Graph :: removeNode(string) {
+  void Graph :: removeNode(string id) {
     
+    if(nodeIdWiseMap.find(id) == nodeIdWiseMap.end()) {
+      throw GraphParseException("Node with id " + id + " not found");
+    }
+    Node *node = nodeIdWiseMap[id];
+    if(rootNodes.find(node) != rootNodes.end()) {
+      rootNodes.erase(node);
+    }
+    nodeIdWiseMap.erase(id);
+    delete node;
+  }
+
+  set<Node *> Graph :: getAllRootNodes() const {
+    return rootNodes;
+  }
+  
+  Node& Graph :: getNodeById(string id) const {
+    if(nodeIdWiseMap.find(id) == nodeIdWiseMap.end()) {
+      throw new GraphParseException("Node with id " + id + " not found");
+    }
+    return *(nodeIdWiseMap.find(id)->second);
   }
 };
 

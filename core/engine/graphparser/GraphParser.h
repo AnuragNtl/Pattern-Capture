@@ -37,12 +37,24 @@ using namespace std;
         ~Graph();
         void addNode(string, string, string, set<string> acceptsFrom, vector<string> inputParams);
         void removeNode(string id);
-        vector<Node *> getAllRootNodes();
-        Node& getNodeById(string id); 
+        set<Node *> getAllRootNodes() const;
+        Node& getNodeById(string id) const; 
     };
     class GraphParser {
     public:
       virtual Graph parse(char *input) = 0;
+    };
+
+    class GraphParseException : public exception {
+      private:
+        string message;
+      public:
+        GraphParseException(string message) {
+          this->message = message;
+        }
+        const char *what() const noexcept {
+          return message.c_str(); 
+        }
     };
   };
 

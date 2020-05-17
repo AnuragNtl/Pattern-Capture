@@ -12,6 +12,6 @@ BUILD_LIB=$(GXX) $(FLAGS) -I . -L lib/ -c -Wall -Werror -fpic $(DEPENDENCY_FILES
 build_lib: 
 	$(BUILD_LIB)
 
-PatternCapture : CommonUtils.cpp Dependencies.cpp  PatternCapture.cpp
+PatternCapture : CommonUtils.cpp Dependencies.cpp  PatternCapture.cpp core/engine/graphparser/GraphParser.cpp
 	$(GXX) $(FLAGS) -I . -L lib/ -Wall -Werror $^ -o bin/$@ -lboost_system -lboost_filesystem
 
