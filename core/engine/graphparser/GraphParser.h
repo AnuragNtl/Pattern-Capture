@@ -35,7 +35,7 @@ using namespace std;
       public:
         Graph();
         ~Graph();
-        void addNode(string, string, string, set<string> acceptsFrom, vector<string> inputParams);
+        Node* addNode(string, string, string, set<string> acceptsFrom, vector<string> inputParams);
         void removeNode(string id);
         set<Node *> getAllRootNodes() const;
         Node& getNodeById(string id) const; 

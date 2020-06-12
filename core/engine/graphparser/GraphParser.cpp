@@ -42,7 +42,7 @@ namespace PatternCapture {
 
   }
 
-  void Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, vector<string> inputParams) {
+  Node* Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, vector<string> inputParams) {
    set<Node*> acceptsFromNodes;
     transform(acceptsFrom.begin(), acceptsFrom.end(), inserter(acceptsFromNodes, acceptsFromNodes.begin()), 
         [this] (string nodeId) {
