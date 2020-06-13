@@ -21,7 +21,7 @@ namespace PatternCapture {
         private:
             Node* addNodeFrom(ptree node, Node *comesFrom, Graph &graph);
         public:
-            Graph parse(char *input);
+            Graph* parse(char *input);
     };
 };
 

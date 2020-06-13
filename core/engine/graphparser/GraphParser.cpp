@@ -54,6 +54,7 @@ namespace PatternCapture {
     if(isRoot) {
       rootNodes.insert(node);
     }
+    return node;
   }
 
   void Graph :: removeNode(string id) {

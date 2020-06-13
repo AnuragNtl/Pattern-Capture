@@ -1,3 +1,5 @@
+#ifndef SCHEDULER_H
+#define SCHEDULER_H
 /* 
  *
  *The dependencies are loaded
@@ -9,3 +11,6 @@
   Engine is modulized with pluggable modules, such as logging and current status module
     Hooks can be inserted in engine
  * */
+
+#endif
+

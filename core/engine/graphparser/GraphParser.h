@@ -42,7 +42,7 @@ using namespace std;
     };
     class GraphParser {
     public:
-      virtual Graph parse(char *input) = 0;
+      virtual Graph* parse(char *input) = 0;
     };
 
     class GraphParseException : public exception {

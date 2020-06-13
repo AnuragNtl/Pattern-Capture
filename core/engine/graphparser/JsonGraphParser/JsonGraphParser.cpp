@@ -11,7 +11,7 @@ using namespace boost::property_tree;
 
 
 
-Graph JsonGraphParser :: parse(char *input) {
+Graph* JsonGraphParser :: parse(char *input) {
    
     ptree graphSpec;
     string inputData = input;
@@ -19,12 +19,12 @@ Graph JsonGraphParser :: parse(char *input) {
     istringstream graphSpecInput;
     
     try {
-        Graph graph;
+        Graph *graph = new Graph;
         read_json(graphSpecInput, graphSpec);
-        
+        addNodeFrom(graphSpec, NULL, *graph);
         return graph;
     } catch(boost::exception &e) {
-        throw GraphParseExcepton("Cannot parse graph from JSON specified");
+        throw GraphParseException("Cannot parse graph from JSON specified");
     }
 }
 
@@ -37,20 +37,26 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
     ptree deliversToNodes = node.get_child(NODE_DELIVERS_TO);
     ptree acceptsFromNodesSpec = node.get_child(NODE_ACCEPTS_FROM);
     set<string> acceptsFromNodes;
-    acceptsFromNodes.insert(comesFrom->id);
+    bool isRoot = false;
+    if(comesFrom != NULL) {
+        acceptsFromNodes.insert(comesFrom->id);
+    } else {
+        isRoot = true;
+    }
 
     vector<string> inputParams;
 
     for(auto &acceptsFromNode : acceptsFromNodesSpec) {
         acceptsFromNodes.insert(acceptsFromNode.second.get_value<string>());
     }
-    
+
     for(auto inputParamSpec : node.get_child(NODE_INPUT_PARAMS)) {
 
-            inputParams.push_back(inputParamSpec.second.get_value<string>());
-            }
-    
+        inputParams.push_back(inputParamSpec.second.get_value<string>());
+    }
+
     Node *graphNode = graph.addNode(nodeId, type, dependencyId, acceptsFromNodes, inputParams);
+    graphNode->isRoot = isRoot;
     for(auto &deliversToNode : deliversToNodes) {
         Node *deliversToGraphNode = addNodeFrom(deliversToNode.second, graphNode, graph);
         graphNode->addDeliversToNode(deliversToGraphNode);
