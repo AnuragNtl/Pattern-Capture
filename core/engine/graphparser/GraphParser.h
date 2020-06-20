@@ -6,6 +6,11 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <Dependencies.h>
+
+#define NATIVE_ENGINE "nativeEngine"
+
+#define DEFAULT_ENGINE NATIVE_ENGINE
 
 using namespace std;
 
@@ -21,21 +26,24 @@ using namespace std;
       set<Node *> deliversToNodes;
       set<Node *> acceptsFromNodes;
       bool isRoot;
-      vector<string> inputParams;
-      Node(string, string, string, set<Node*>, vector<string> inputParams, bool isRoot = false); //Not accepting deliversToNodes
+      map<string, string> inputParams;
+      string executeWithEngine;
+      Node(string, string, string, set<Node*>, map<string, string> inputParams, bool isRoot = false, string executeWithEngine = DEFAULT_ENGINE); //Not accepting deliversToNodes
       void addDeliversToNode(Node *);
       void removeFromAcceptsFromList(Node *);
       void removeFromDeliversToList(Node *);
+      Dependency *dependency;
       ~Node();
     };
     struct Graph {
       private:
         map<string, Node *> nodeIdWiseMap;
-        set<Node *> rootNodes;
       public:
+        set<Node *> rootNodes;
+        set<string> hooks;
         Graph();
         ~Graph();
-        Node* addNode(string, string, string, set<string> acceptsFrom, vector<string> inputParams);
+        Node* addNode(string, string, string, set<string> acceptsFrom, map<string, string> inputParams);
         void removeNode(string id);
         set<Node *> getAllRootNodes() const;
         Node& getNodeById(string id) const; 

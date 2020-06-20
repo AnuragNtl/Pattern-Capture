@@ -51,6 +51,7 @@ namespace PatternCapture {
   void initialize();
   bool isValidLib(string libName);
   Dependency* loadDependencyFromFile(string fileName, string);
+  bool dependencyExists(DependencyKey);
   ostream& operator<<(ostream &out, const DependencyKey &dependencyKey); 
 };
 #endif

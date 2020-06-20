@@ -22,7 +22,7 @@ namespace PatternCapture {
   template<class CapturedData>
   class CaptureSource : public Dependency {
     public:
-      virtual CapturedData& capture(char *input[]) = 0;
+      virtual CapturedData& capture(map<string, string> input) = 0;
       virtual string getId() const = 0;
       void* operator()(void *input);
   };

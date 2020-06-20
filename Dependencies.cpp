@@ -98,5 +98,18 @@ namespace PatternCapture {
     out << dependencyKey.dependencyName << " " << dependencyKey.dependencyId;
     return out;
   }
+
+  Dependency* getDependency(string type, string id) {
+      DependencyKey dependencyKey(type, id);
+      if(dependencyTypeWiseTable.find(dependencyKey) == dependencyTypeWiseTable.end()) {
+          throw DependencyException("No dependency found with id " + id);
+      }
+      return dependencyTypeWiseTable[dependencyKey];
+  }
+
+  bool dependencyExists(DependencyKey dependencyKey) {
+      return dependencyTypeWiseTable.find(dependencyKey) != dependencyTypeWiseTable.end();
+  }
+
 };
 

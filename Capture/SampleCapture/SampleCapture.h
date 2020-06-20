@@ -13,7 +13,7 @@ class SampleCapture : public CaptureSource<int> {
 
   public:
     string getId() const;
-    int& capture(char *input[]);
+    int& capture(map<string, string>);
 };
 
 extern "C" {

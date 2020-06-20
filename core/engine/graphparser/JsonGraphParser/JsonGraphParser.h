@@ -11,6 +11,7 @@
 #define NODE_DELIVERS_TO "deliversToNodes"
 #define NODE_ACCEPTS_FROM "acceptsFromNodes"
 #define NODE_INPUT_PARAMS "inputParams"
+#define GRAPH_HOOKS "hooks"
 
 using namespace boost::property_tree;
 

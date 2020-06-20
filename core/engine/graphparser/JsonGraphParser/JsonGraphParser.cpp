@@ -4,6 +4,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <vector>
 #include <set>
+#include <map>
 
 using namespace std;
 using namespace PatternCapture;
@@ -21,6 +22,10 @@ Graph* JsonGraphParser :: parse(char *input) {
     try {
         Graph *graph = new Graph;
         read_json(graphSpecInput, graphSpec);
+        for(auto &hook : graphSpec.get_child(GRAPH_HOOKS)) {
+
+            graph->hooks.insert(hook.second.get_value<string>());
+        }
         addNodeFrom(graphSpec, NULL, *graph);
         return graph;
     } catch(boost::exception &e) {
@@ -44,7 +49,7 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
         isRoot = true;
     }
 
-    vector<string> inputParams;
+    map<string, string> inputParams;
 
     for(auto &acceptsFromNode : acceptsFromNodesSpec) {
         acceptsFromNodes.insert(acceptsFromNode.second.get_value<string>());
@@ -52,7 +57,7 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
 
     for(auto inputParamSpec : node.get_child(NODE_INPUT_PARAMS)) {
 
-        inputParams.push_back(inputParamSpec.second.get_value<string>());
+        inputParams[inputParamSpec.first] = inputParamSpec.second.get_value<string>();
     }
 
     Node *graphNode = graph.addNode(nodeId, type, dependencyId, acceptsFromNodes, inputParams);

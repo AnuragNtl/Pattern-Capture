@@ -1,9 +1,9 @@
-#include "GraphParser.h"
+#include "./GraphParser.h"
 #include <algorithm>
 
 namespace PatternCapture {
 
-  Node :: Node(string id, string type, string dependencyId, set<Node *> acceptsFromNodes, vector<string> inputParams, bool isRoot) : id(id), type(type), dependencyId(dependencyId), acceptsFromNodes(acceptsFromNodes), isRoot(isRoot), inputParams(inputParams) {
+  Node :: Node(string id, string type, string dependencyId, set<Node *> acceptsFromNodes, map<string, string> inputParams, bool isRoot, string executeWithEngine) : id(id), type(type), dependencyId(dependencyId), acceptsFromNodes(acceptsFromNodes),  inputParams(inputParams), executeWithEngine(executeWithEngine), dependency(NULL) {
     addAcceptsFromNodes();
   }
 
@@ -42,7 +42,7 @@ namespace PatternCapture {
 
   }
 
-  Node* Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, vector<string> inputParams) {
+  Node* Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, map<string, string> inputParams) {
    set<Node*> acceptsFromNodes;
     transform(acceptsFrom.begin(), acceptsFrom.end(), inserter(acceptsFromNodes, acceptsFromNodes.begin()), 
         [this] (string nodeId) {

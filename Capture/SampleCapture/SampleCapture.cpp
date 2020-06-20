@@ -20,7 +20,7 @@ Dependency* getDependency(const char *dependencyName) {
   return new SampleCapture;
 }
 
-int& SampleCapture :: capture(char *input[]) {
+int& SampleCapture :: capture(map<string, string> input) {
   cout << "::\n";
   int *p = new int;
   *p = 6;
