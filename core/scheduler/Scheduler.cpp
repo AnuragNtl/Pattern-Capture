@@ -20,7 +20,7 @@ void Scheduler :: execute(const Graph &graph) {
     vector<Hook*> executeAfter;
     initializeHooks(graph, executeBefore, executeAfter);
     validateGraph(graph);
-    execute(graph);
+    executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
 }
 
 void Scheduler :: initializeHooks(const Graph &graph, vector<Hook*> &executeBefore, vector<Hook*> &executeAfter) {
@@ -98,5 +98,9 @@ void Scheduler :: executeNodes(const Graph &graph, const vector<Hook*> &executeB
             nodeThreads.push_back(nodeThread);
     });
 
+    for_each(nodeThreads.begin(), nodeThreads.end(), [] (thread nodeThread) {
+
+            nodeThread.join();
+            });
 }
 
