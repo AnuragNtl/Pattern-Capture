@@ -50,7 +50,8 @@ using namespace std;
     };
     class GraphParser {
     public:
-      virtual Graph* parse(char *input) = 0;
+      virtual Graph* parse(const char *input) = 0;
+      virtual ~GraphParser() {}
     };
 
     class GraphParseException : public exception {

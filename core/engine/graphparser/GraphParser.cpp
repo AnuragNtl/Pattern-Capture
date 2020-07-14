@@ -80,5 +80,12 @@ namespace PatternCapture {
     }
     return *(nodeIdWiseMap.find(id)->second);
   }
+
+  Graph :: ~Graph() {
+      for(auto node : rootNodes) {
+
+          delete node;
+      }
+  }
 };
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <boost/exception/diagnostic_information.hpp>
 
 using namespace std;
 using namespace PatternCapture;
@@ -12,7 +13,7 @@ using namespace boost::property_tree;
 
 
 
-Graph* JsonGraphParser :: parse(char *input) {
+Graph* JsonGraphParser :: parse(const char *input) {
    
     ptree graphSpec;
     string inputData = input;
@@ -29,7 +30,7 @@ Graph* JsonGraphParser :: parse(char *input) {
         addNodeFrom(graphSpec, NULL, *graph);
         return graph;
     } catch(boost::exception &e) {
-        throw GraphParseException("Cannot parse graph from JSON specified");
+        throw GraphParseException("Cannot parse graph from JSON specified" + boost::diagnostic_information(e));
     }
 }
 
