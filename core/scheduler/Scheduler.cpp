@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <thread>
 #include <future>
+#include <iostream>
 
 using namespace std;
 
@@ -92,15 +93,15 @@ void Scheduler :: executeSingleNode(const Graph &&graph, const vector<Hook*> &&e
 
 void Scheduler :: executeNodes(const Graph &graph, const vector<Hook*> &executeBefore, const vector<Hook*> &executeAfter, const set<Node*> :: iterator &firstNode, const set<Node*> :: iterator &lastNode, void *inputData) {
 
-    //vector<thread> nodeThreads;
-    for_each(firstNode, lastNode, [this, &graph, &executeBefore, &executeAfter] (Node *node) {
-            thread nodeThread(executeSingleNode, graph, executeBefore, executeAfter, *node, this, (void*)NULL);
-            //nodeThreads.push_back(nodeThread);
+    vector<thread*> nodeThreads;
+    for_each(firstNode, lastNode, [this, &graph, &executeBefore, &executeAfter, &nodeThreads] (Node *node) {
+            thread *nodeThread = new thread(executeSingleNode, graph, executeBefore, executeAfter, *node, this, (void*)NULL);
+            nodeThreads.push_back(nodeThread);
     });
 
-    /*for_each(nodeThreads.begin(), nodeThreads.end(), [] (thread &nodeThread) {
+    for_each(nodeThreads.begin(), nodeThreads.end(), [] (thread *nodeThread) {
 
-            nodeThread.join();
-            });*/
+            nodeThread->join();
+            });
 }
 

@@ -18,7 +18,7 @@ Graph* JsonGraphParser :: parse(const char *input) {
     ptree graphSpec;
     string inputData = input;
     
-    istringstream graphSpecInput;
+    istringstream graphSpecInput(inputData);
     
     try {
         Graph *graph = new Graph;
@@ -27,19 +27,13 @@ Graph* JsonGraphParser :: parse(const char *input) {
 
             graph->hooks.insert(hook.second.get_value<string>());
         }
-        addNodeFrom(graphSpec, NULL, *graph);
-        return graph;
-    } catch(boost::exception &e) {
-        throw GraphParseException("Cannot parse graph from JSON specified" + boost::diagnostic_information(e));
-    }
-}
+        addNodeFrom(graphSpec, NULL, *graph); return graph; } catch(boost::exception &e) { throw GraphParseException("Cannot parse graph from JSON specified" + boost::diagnostic_information(e)); } }
 
 
 Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) {
-
-    string nodeId = node.get_value<string>(NODE_ID);
-    string type = node.get_value(NODE_TYPE);
-    string dependencyId = node.get_value(NODE_DEPENDENCY_ID);
+    string nodeId = node.get_child(NODE_ID).get_value<string>();
+    string type = node.get_child(NODE_TYPE).get_value<string>();
+    string dependencyId = node.get_child(NODE_DEPENDENCY_ID).get_value<string>();
     ptree deliversToNodes = node.get_child(NODE_DELIVERS_TO);
     ptree acceptsFromNodesSpec = node.get_child(NODE_ACCEPTS_FROM);
     set<string> acceptsFromNodes;

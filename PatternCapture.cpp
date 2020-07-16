@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
 
 void processGraph(string parser, string data) {
 
+    initialize();
     GraphParserFactory graphParserFactory;
     GraphParser *graphParser = graphParserFactory.getGraphParser(parser);
     Graph *graph = graphParser->parse(data.c_str());

@@ -31,7 +31,7 @@ namespace PatternCapture {
 
 template<class CapturedData>
 void* CaptureSource<CapturedData> :: operator()(void *input) {
-  return &(capture((char **) input));
+  return &(capture(*(map<string, string>*) input));
 }
 };
 
