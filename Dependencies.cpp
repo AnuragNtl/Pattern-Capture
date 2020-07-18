@@ -56,10 +56,10 @@ const char* DependencyException :: what() const noexcept {
 DependencyKey :: DependencyKey(string dependencyName, string dependencyId) : dependencyName(dependencyName), dependencyId(dependencyId) {}
 
 bool DependencyKey :: operator<(const DependencyKey &other) const {
-  if(dependencyName.compare(other.dependencyName) == 0) {
-    return dependencyId.compare(other.dependencyId);
+  if(dependencyName == other.dependencyName) {
+    return dependencyId.compare(other.dependencyId) < 0;
   } else {
-    return dependencyName.compare(dependencyName);
+    return dependencyName.compare(other.dependencyName) < 0;
   }
 }
 
@@ -77,7 +77,9 @@ namespace PatternCapture {
        vector<string> supportedDependencyTypes;
        try {
         supportedDependencyTypes = dependencyManager.getAllSupportedDependencyTypes(libPath);
-       } catch(DependencyException &e) {}
+       } catch(DependencyException &e) {
+        cout << e.what() << "\n";
+       }
        for_each(supportedDependencyTypes.begin(), supportedDependencyTypes.end(), [libPath] (string dependencyName) {
         Dependency *dependency = loadDependencyFromFile(libPath, dependencyName);
         dependencyTypeWiseTable[DependencyKey(dependencyName, dependency->getId())] = dependency;

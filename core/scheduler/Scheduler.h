@@ -30,7 +30,6 @@
 using namespace PatternCapture;
 using namespace std;
 
-#define DEPENDENCY_TYPE_HOOKS "hooks"
 
 namespace PatternCapture {
     class Scheduler {

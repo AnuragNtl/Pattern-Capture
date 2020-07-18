@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
         spec = getContents(std::move(cin));
     }
     processGraph("graphParserJson", spec);
-    cout << argc << "\n";
 
   return 0;
 }

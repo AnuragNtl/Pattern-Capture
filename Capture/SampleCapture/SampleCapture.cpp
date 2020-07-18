@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <chrono>
+#include <thread>
+
 using namespace std;
 
 string SampleCapture :: getId() const {
@@ -21,6 +24,7 @@ Dependency* getDependency(const char *dependencyName) {
 }
 
 int& SampleCapture :: capture(map<string, string> input) {
+    this_thread::sleep_for(chrono::seconds(20));
   cout << "::\n";
   int *p = new int;
   *p = 6;
