@@ -1,5 +1,9 @@
 #include "./GraphParser.h"
 #include <algorithm>
+#include <sstream>
+#include <boost/algorithm/string.hpp>
+
+using namespace boost;
 
 namespace PatternCapture {
 
@@ -19,8 +23,7 @@ namespace PatternCapture {
         delete node;
         });
     for_each(deliversToNodes.begin(), deliversToNodes.end(), [] (Node *node) {
-        delete node;
-        });
+        delete node; });
   }
 
   void Node :: addDeliversToNode(Node *node) {
@@ -45,7 +48,7 @@ namespace PatternCapture {
   Node* Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, map<string, string> inputParams) {
    set<Node*> acceptsFromNodes;
     transform(acceptsFrom.begin(), acceptsFrom.end(), inserter(acceptsFromNodes, acceptsFromNodes.begin()), 
-        [this] (string nodeId) {
+        [this, dependencyId] (string nodeId) {
         return nodeIdWiseMap[nodeId];
         });
     bool isRoot = acceptsFromNodes.size() == 0;
@@ -86,6 +89,49 @@ namespace PatternCapture {
 
           delete node;
       }
+  }
+
+  ostream& operator<<(ostream &out, const Graph &graph) {
+
+      out << "---------------Graph----------------\n";
+      out << "Hooks:\n";
+      for(const string &hook : graph.hooks) {
+          out << hook << "\n";
+      }
+      for(const Node *node : graph.rootNodes) {
+          out << *node;
+      }
+      return out;
+  }
+
+  ostream& operator<<(ostream &out, const Node &node) {
+      out << "--------------Node-----------------\n";
+      out << "id " << node.id << "\n";
+      out << "type " << node.type << "\n";
+      out << "dependencyId " << node.dependencyId << "\n";
+      for(Node *connectedNode : node.acceptsFromNodes) {
+          out << "Accepts from: " << connectedNode->id << "\n";
+      }
+      for(Node *connectedNode : node.deliversToNodes) {
+          std::ostringstream paddedOutput;
+          out << "\n" << node.id << " delivers to: \n"; 
+          paddedOutput << *connectedNode << "\n";
+          string output = paddedOutput.str();
+          replace_all(output, "\n", "\n    ");
+          out << output;
+      }
+      return out;
+  }
+
+  Graph :: operator string() {
+      ostringstream output;
+      output << (*this);
+      return output.str();
+  }
+
+  string Graph :: toString() {
+
+      return (string)(*this);
   }
 };
 

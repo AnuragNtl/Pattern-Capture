@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <Dependencies.h>
+#include <iostream>
 
 #define NATIVE_ENGINE "nativeEngine"
 
@@ -47,6 +48,8 @@ using namespace std;
         void removeNode(string id);
         set<Node *> getAllRootNodes() const;
         Node& getNodeById(string id) const; 
+        operator string();
+        string toString();
     };
     class GraphParser {
     public:
@@ -65,6 +68,8 @@ using namespace std;
           return message.c_str(); 
         }
     };
+    ostream& operator<<(ostream &out, const Graph &graph);
+    ostream& operator<<(ostream &out, const Node &node);
   };
 
 #endif

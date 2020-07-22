@@ -22,7 +22,7 @@ namespace PatternCapture {
   template<class CapturedData>
   class CaptureSource : public Dependency {
     public:
-      virtual CapturedData& capture(map<string, string> input) = 0;
+      virtual CapturedData capture(map<string, string> input) = 0;
       virtual string getId() const = 0;
       void* operator()(void *input);
   };
@@ -31,7 +31,9 @@ namespace PatternCapture {
 
 template<class CapturedData>
 void* CaptureSource<CapturedData> :: operator()(void *input) {
-  return &(capture(*(map<string, string>*) input));
+  CapturedData *capturedData = new CapturedData;
+  *capturedData = (capture(*(map<string, string>*) input));
+  return capturedData;
 }
 };
 

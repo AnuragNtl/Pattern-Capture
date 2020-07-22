@@ -19,6 +19,7 @@ void Scheduler :: execute(const Graph &graph) {
 
     vector<Hook*> executeBefore;
     vector<Hook*> executeAfter;
+    cout << graph << "\n";
     initializeHooks(graph, executeBefore, executeAfter);
     validateGraph(graph);
     executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
@@ -32,10 +33,7 @@ void Scheduler :: initializeHooks(const Graph &graph, vector<Hook*> &executeBefo
         }
         switch(hook->getHookType()) {
             case (HookType::EXECUTE_BEFORE): executeBefore.push_back(hook);
-                                           break;
-            case (HookType::EXECUTE_AFTER): executeAfter.push_back(hook);
-                                          break;
-            default:
+                                           break; case (HookType::EXECUTE_AFTER): executeAfter.push_back(hook); break; default:
             throw DependencyException("Invalid hookType for hook " + hookId);
                                           break;
 
@@ -53,11 +51,11 @@ void Scheduler :: validateAndAssignDependencies(const Graph &graph) {
 
 void Scheduler :: validateAndAssignAllDependencies(Node *node) {
 
-    if(!dependencyExists(DependencyKey(node->type, node->id))) {
-        throw DependencyException("Invalid dependency " + node->id);
+    if(!dependencyExists(DependencyKey(node->type, node->dependencyId))) {
+        throw DependencyException("Invalid dependency " + node->dependencyId);
     }
 
-    node->dependency = getDependency(node->type, node->id);
+    node->dependency = getDependency(node->type, node->dependencyId);
     for_each(node->deliversToNodes.begin(), node->deliversToNodes.end(), [this] (Node *subnode) {
 
             validateAndAssignAllDependencies(subnode);
@@ -70,7 +68,7 @@ void Scheduler :: validateGraph(const Graph &graph) {
 }
 
 
-void Scheduler :: executeSingleNode(const Graph &&graph, const vector<Hook*> &&executeBefore, const vector<Hook*> &&executeAfter, Node &&node,  Scheduler *scheduler, void *inputData) {
+void Scheduler :: executeSingleNode(const Graph &graph, const vector<Hook*> &&executeBefore, const vector<Hook*> &&executeAfter, Node &node,  Scheduler *scheduler, void *inputData) {
 
     Dependency &dependency = *(node.dependency);
     void *dependencyResponse;
@@ -94,8 +92,8 @@ void Scheduler :: executeSingleNode(const Graph &&graph, const vector<Hook*> &&e
 void Scheduler :: executeNodes(const Graph &graph, const vector<Hook*> &executeBefore, const vector<Hook*> &executeAfter, const set<Node*> :: iterator &firstNode, const set<Node*> :: iterator &lastNode, void *inputData) {
 
     vector<thread*> nodeThreads;
-    for_each(firstNode, lastNode, [this, &graph, &executeBefore, &executeAfter, &nodeThreads] (Node *node) {
-            thread *nodeThread = new thread(executeSingleNode, graph, executeBefore, executeAfter, *node, this, (void*)NULL);
+    for_each(firstNode, lastNode, [this, &graph, &executeBefore, &executeAfter, &nodeThreads, inputData] (Node *node) {
+            thread *nodeThread = new thread(executeSingleNode, std::ref(graph), executeBefore, executeAfter, std::ref(*node), this, inputData);
             nodeThreads.push_back(nodeThread);
     });
 

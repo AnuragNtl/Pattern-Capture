@@ -40,7 +40,7 @@ namespace PatternCapture {
             void validateAndAssignDependencies(const Graph &); 
             void validateAndAssignAllDependencies(Node *node);
             void executeNodes(const Graph &, const vector<Hook*> &, const vector<Hook*> &, const set<Node*> :: iterator &, const set<Node*> :: iterator&, void *inputData = NULL);
-            static void executeSingleNode(const Graph &&, const vector<Hook*> &&, const vector<Hook*> &&, Node &&, Scheduler *scheduler, void *inputData = NULL);
+            static void executeSingleNode(const Graph &, const vector<Hook*> &&, const vector<Hook*> &&, Node &, Scheduler *scheduler, void *inputData = NULL);
         public:
             Scheduler();
             void execute(const Graph &);

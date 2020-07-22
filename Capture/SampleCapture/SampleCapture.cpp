@@ -23,11 +23,11 @@ Dependency* getDependency(const char *dependencyName) {
   return new SampleCapture;
 }
 
-int& SampleCapture :: capture(map<string, string> input) {
-    this_thread::sleep_for(chrono::seconds(20));
+int SampleCapture :: capture(map<string, string> input) {
+    //this_thread::sleep_for(chrono::seconds(20));
   cout << "::\n";
   int *p = new int;
-  *p = 6;
+  *p = 2;
   return *p;
 }
 
