@@ -39,6 +39,11 @@ namespace PatternCapture {
     public:
       virtual string getId() const = 0;
       virtual void* operator()(void *input) { return NULL; }
+      virtual void* operator()(void *input, map<string, string> params) {
+          if(params.size() == 0)
+              return (*this)(input);
+          return NULL; 
+      }
   };
   struct DependencyKey {
     string dependencyName;

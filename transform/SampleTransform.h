@@ -1,15 +1,15 @@
 #ifndef SAMPLE_TRANSFORM_H
 #define SAMPLE_TRANSFORM
 
-#include "../Dependencies.h"
+#include "Transform.h"
 
 using namespace PatternCapture;
 
-class SampleTransform : public Dependency {
+class SampleTransform : public Transform<int, int> {
 
     public:
         string getId() const;
-        void* operator()(void *);
+        int transform(int input, map<string, string> params);
 
 };
 

@@ -21,14 +21,16 @@
 
  * */
 
-#include "../engine/graphparser/GraphParser.h"
+
 #include <vector>
+using namespace std;
+
 #include <core/engine/hooks/Hooks.h>
+#include "../engine/graphparser/GraphParser.h"
 #include <thread>
 #include <future>
 
 using namespace PatternCapture;
-using namespace std;
 
 
 namespace PatternCapture {

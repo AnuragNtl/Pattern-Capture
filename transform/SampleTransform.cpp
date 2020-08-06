@@ -7,12 +7,9 @@ string SampleTransform :: getId() const {
     return "sampleTransform";
 }
 
-void* SampleTransform :: operator()(void *input) {
-    cout << "In sampleTransform\n";
-    int *i = (int *) input;
-    int *i1 = new int;
-    *i1 = (*i) * 2;
-    cout << *i1 << "\n";
+int SampleTransform :: transform(int input, map<string, string>) {
+    int i1 = input * 2;
+    cout << i1 << "\n";
     return i1;
 }
 
@@ -23,6 +20,17 @@ Dependency* getDependency(const char *) {
 vector<string> getDependencyTypes() {
     return {"sampleTransform"};
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
