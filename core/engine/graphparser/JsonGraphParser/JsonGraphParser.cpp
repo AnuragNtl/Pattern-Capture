@@ -32,10 +32,15 @@ Graph* JsonGraphParser :: parse(const char *input) {
 
 Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) {
     string nodeId = node.get_child(NODE_ID).get_value<string>();
-    string type = node.get_child(NODE_TYPE).get_value<string>();
+    ptree empty_ptree;
+    boost :: optional<ptree &> typeOpt = node.get_child_optional(NODE_TYPE);
+    string type;
+    if(typeOpt) {
+        type = typeOpt->get_value<string>();
+    }
     string dependencyId = node.get_child(NODE_DEPENDENCY_ID).get_value<string>();
-    ptree deliversToNodes = node.get_child(NODE_DELIVERS_TO);
-    ptree acceptsFromNodesSpec = node.get_child(NODE_ACCEPTS_FROM);
+    ptree &deliversToNodes = node.get_child_optional(NODE_DELIVERS_TO).value_or(empty_ptree);
+    ptree acceptsFromNodesSpec = node.get_child_optional(NODE_ACCEPTS_FROM).value_or(empty_ptree);
     set<string> acceptsFromNodes;
     bool isRoot = false;
     if(comesFrom != NULL) {
@@ -50,7 +55,7 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
         acceptsFromNodes.insert(acceptsFromNode.second.get_value<string>());
     }
 
-    for(auto inputParamSpec : node.get_child(NODE_INPUT_PARAMS)) {
+    for(auto inputParamSpec : node.get_child_optional(NODE_INPUT_PARAMS).value_or(empty_ptree)) {
 
         inputParams[inputParamSpec.first] = inputParamSpec.second.get_value<string>();
     }

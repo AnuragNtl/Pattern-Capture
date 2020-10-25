@@ -4,7 +4,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <functional>
-#include <Dependencies.h>
+#include "../Dependencies.h"
 #include <thread>
 
 using namespace std;
@@ -20,11 +20,10 @@ using namespace std;
  */
 namespace PatternCapture {
   template<class CapturedData>
-  class CaptureSource : public Dependency {
+  class CaptureSource : public virtual Dependency {
     public:
       virtual CapturedData capture(map<string, string> input) = 0;
-      virtual string getId() const = 0;
-      void* operator()(void *input);
+      virtual void* operator()(void *input);
   };
   
 

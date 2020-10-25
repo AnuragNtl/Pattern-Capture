@@ -3,7 +3,7 @@
 #define SAMPLE_CAPTURE_H
 
 #include <iostream>
-#include "Dependencies.h"
+#include "../../Dependencies.h"
 #include "../CaptureSource.h"
 
 using namespace PatternCapture;

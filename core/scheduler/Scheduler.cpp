@@ -79,7 +79,7 @@ void Scheduler :: executeSingleNode(const Graph &graph, const vector<Hook*> &&ex
     if(inputData == NULL) {
         dependencyResponse = dependency(&node.inputParams);
     } else {
-        dependencyResponse = dependency(inputData, inputParams);
+        dependencyResponse = dependency(inputData, node.inputParams);
     }
 
     for(auto afterHook : executeAfter)

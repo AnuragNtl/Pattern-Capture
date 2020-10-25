@@ -26,6 +26,9 @@ Dependency* getDependency(const char *dependencyName) {
 int SampleCapture :: capture(map<string, string> input) {
     //this_thread::sleep_for(chrono::seconds(20));
   cout << "::\n";
+  for(auto &i1 : input) {
+      cout << i1.first << " " << i1.second <<"\n";
+  }
   int *p = new int;
   *p = 2;
   return *p;

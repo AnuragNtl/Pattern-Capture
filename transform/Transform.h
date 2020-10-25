@@ -7,10 +7,9 @@ using namespace std;
 namespace PatternCapture {
 
     template<class InputData, class TransformedData>
-        class Transform {
+        class Transform : public virtual Dependency {
             public:
-                void* operator()(void *input, map<string, string> inputParams);
-                virtual string getId() const = 0;
+                virtual void* operator()(void *input, map<string, string> inputParams);
                 virtual TransformedData transform(InputData inputData, map<string, string>) const = 0;
         };
 
