@@ -26,7 +26,8 @@ void Scheduler :: execute(const Graph &graph) {
 }
 
 void Scheduler :: initializeHooks(const Graph &graph, vector<Hook*> &executeBefore, vector<Hook*> &executeAfter) {
-    for(string hookId : graph.hooks) {
+    for(auto hookProperties : graph.hookProperties) {
+        string hookId = hookProperties.first;
         Hook *hook = dynamic_cast<Hook*>(getDependency(DEPENDENCY_TYPE_HOOKS, hookId));
         if(hook == NULL) {
             throw DependencyException(hookId + " is not a hook");

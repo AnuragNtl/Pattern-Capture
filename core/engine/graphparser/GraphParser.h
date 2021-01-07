@@ -30,18 +30,28 @@ using namespace std;
       map<string, string> inputParams;
       string executeWithEngine;
       Node(string, string, string, set<Node*>, map<string, string> inputParams, bool isRoot = false, string executeWithEngine = DEFAULT_ENGINE); //Not accepting deliversToNodes
+      Node() = default;
       void addDeliversToNode(Node *);
       void removeFromAcceptsFromList(Node *);
       void removeFromDeliversToList(Node *);
       Dependency *dependency;
       ~Node();
     };
+
+    struct HookProperties {
+        
+        map<string, string> properties;
+        string& operator[](string);
+        friend ostream& operator<<(ostream &out, const HookProperties &);
+    };
+
     struct Graph {
       private:
         map<string, Node *> nodeIdWiseMap;
       public:
+        map<string, HookProperties > hookProperties;
         set<Node *> rootNodes;
-        set<string> hooks;
+        map<string, string> properties;
         Graph();
         ~Graph();
         Node* addNode(string, string, string, set<string> acceptsFrom, map<string, string> inputParams);
@@ -50,6 +60,7 @@ using namespace std;
         Node& getNodeById(string id) const; 
         operator string();
         string toString();
+        HookProperties& operator[](string);
     };
     class GraphParser {
     public:
@@ -70,6 +81,8 @@ using namespace std;
     };
     ostream& operator<<(ostream &out, const Graph &graph);
     ostream& operator<<(ostream &out, const Node &node);
+    ostream& operator<<(ostream &out, const HookProperties &);
+    
   };
 
 #endif

@@ -11,7 +11,8 @@
 #define NODE_DELIVERS_TO "deliversToNodes"
 #define NODE_ACCEPTS_FROM "acceptsFromNodes"
 #define NODE_INPUT_PARAMS "inputParams"
-#define GRAPH_HOOKS "hooks"
+#define GRAPH_PROPERTIES "graphProperties"
+#define HOOKS_PROPERTIES "hooksProperties"
 
 using namespace boost::property_tree;
 
@@ -21,6 +22,10 @@ namespace PatternCapture {
 
         private:
             Node* addNodeFrom(ptree node, Node *comesFrom, Graph &graph);
+            void addGraphProperties(Graph &, const ptree &);
+            void addHookProperties(Graph &, const ptree &, string hookName);
+            void addHooksProperties(Graph &, const ptree &);
+
         public:
             Graph* parse(const char *input);
     };

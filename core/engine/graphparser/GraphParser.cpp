@@ -95,8 +95,9 @@ namespace PatternCapture {
 
       out << "---------------Graph----------------\n";
       out << "Hooks:\n";
-      for(const string &hook : graph.hooks) {
-          out << hook << "\n";
+      for(const auto &hookPropertiesPair : graph.hookProperties) {
+          out << hookPropertiesPair.first << "\n";
+          out << hookPropertiesPair.second << "\n";
       }
       for(const Node *node : graph.rootNodes) {
           out << *node;
@@ -133,5 +134,20 @@ namespace PatternCapture {
 
       return (string)(*this);
   }
+
+  HookProperties& Graph :: operator[](string key) {
+      return hookProperties[key];
+  }
+
+  string& HookProperties :: operator[](string key) {
+      return properties[key];
+  }
+
+  ostream& operator<<(ostream &out, const HookProperties &hookProperties) {
+      for(const auto &hookPropertyPair : hookProperties.properties)
+          out << "    " << hookPropertyPair.first << " " << hookPropertyPair.second << "\n";
+      return out;
+  }
+  
 };
 

@@ -2,6 +2,7 @@
 #include <boost/process.hpp>
 #include <boost/asio.hpp>
 #include "CommandLine.h"
+#include <chrono>
 
 using namespace PatternCapture;
 using namespace std;

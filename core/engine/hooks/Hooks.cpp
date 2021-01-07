@@ -11,3 +11,10 @@ void* Hook :: operator()(void *input) {
    return nullptr;
 }
 
+void* Hook :: operator()(void *input, map<string, string> params) {
+    Node *node = reinterpret_cast<Node*>(input);
+    executeHook(*node, params);
+    return NULL;
+}
+
+

@@ -11,6 +11,7 @@ using namespace std;
 using namespace PatternCapture;
 using namespace boost::property_tree;
 
+ptree empty_ptree;
 
 
 Graph* JsonGraphParser :: parse(const char *input) {
@@ -23,16 +24,13 @@ Graph* JsonGraphParser :: parse(const char *input) {
     try {
         Graph *graph = new Graph;
         read_json(graphSpecInput, graphSpec);
-        for(auto &hook : graphSpec.get_child(GRAPH_HOOKS)) {
-
-            graph->hooks.insert(hook.second.get_value<string>());
-        }
+        addGraphProperties(*graph, graphSpec);
+        addHooksProperties(*graph, graphSpec);
         addNodeFrom(graphSpec, NULL, *graph); return graph; } catch(boost::exception &e) { throw GraphParseException("Cannot parse graph from JSON specified" + boost::diagnostic_information(e)); } }
 
 
 Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) {
     string nodeId = node.get_child(NODE_ID).get_value<string>();
-    ptree empty_ptree;
     boost :: optional<ptree &> typeOpt = node.get_child_optional(NODE_TYPE);
     string type;
     if(typeOpt) {
@@ -68,4 +66,30 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
     }
     return graphNode;
 }
+
+void JsonGraphParser :: addGraphProperties(Graph &graph, const ptree &root) {
+    ptree graphPropertiesSpec = root.get_child_optional(GRAPH_PROPERTIES).value_or(empty_ptree);
+    for(auto propertySpec : graphPropertiesSpec) {
+        graph.properties[propertySpec.first] = propertySpec.second.get_value<string>();
+    }
+    
+}
+
+void JsonGraphParser :: addHookProperties(Graph &graph, const ptree &hookSpec, string hookName) {
+
+    for(auto hookSpecItem : hookSpec) {
+        graph[hookName][hookSpecItem.first] = hookSpecItem.second.get_value<string>();
+    }
+}
+
+void JsonGraphParser :: addHooksProperties(Graph &graph, const ptree &root) {
+
+    ptree hooksPropertiesSpec = root.get_child_optional(HOOKS_PROPERTIES).value_or(empty_ptree);
+    for(auto hookSpecItem : hooksPropertiesSpec) {
+        addHookProperties(graph, hookSpecItem.second, hookSpecItem.first);
+    }
+
+}
+
+
 

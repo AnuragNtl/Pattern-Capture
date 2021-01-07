@@ -7,26 +7,60 @@
 #include <map>
 #include <boost/beast/http.hpp>
 
+#define URL_KEY "url"
+#define HOST_KEY "host"
+#define PORT_KEY "port"
+#define PATH_KEY "path"
+#define VERB_KEY "VERB"
+#define PAYLOAD_KEY "payload"
+#define HEADERS_KEY "headers"
+#define HOOK_TYPE_KEY "hookType"
+#define HEADER_DELIMITER "\n"
+#define HEADER_NAME_VALUE_DELIMITER ":"
+#define DEFAULT_PORT "80"
+
 namespace PatternCapture {
 
-    class HttpRelayDependency : public CommonDependency<string, string>, public Hook  {
+
+    class HttpRelayDependency : public CommonDependency<string, string> {
 
         private:
-            string host, path, url, method, payload;
+            string host, port, path, url, payload;
             map<string, string> headers;
-            HookType hookType;
             boost::beast::http::verb verb;
 
         protected:
             string getResponse() const;
             string extractRegex(string, string);
+            void loadParams(std::map<std::string, std::string> &);
+            static map<string, http::verb> httpVerbMap;
+            static void initializeVerbMap();
+            void extractHostPortPathFromUrl(string);
         public:
-            HttpRelayDependency(string url, string method, string payload, map<string, string> headers, HookType hookType, boost::beast::http::verb);
-            string getOutput(string input, map<string, string>);
-            void executeHook(const Node &);
-            HookType getHookType();
+            HttpRelayDependency();
+            HttpRelayDependency(string url, string payload, map<string, string> headers, boost::beast::http::verb);
+            string getOutput(string input, map<string, string>) const;
+            virtual string getId() const;
+            friend class HttpRelayHook;
     };
+
+    class HttpRelayHook : public Hook {
+
+        private:
+            HookType hookType;
+        public:
+            HookType getHookType();
+            void executeHook(const Node&, map<string, string> inputParams);
+    };
+
 };
+
+extern "C" {
+
+    extern vector<string> getDependencyTypes();
+    extern Dependency* getDependency(const char *);
+
+}
 
 
 #endif
