@@ -14,6 +14,8 @@ using namespace boost::filesystem;
 
 namespace PatternCapture {
   vector<string> listDirectory(string);
+  string getContents(istream &&in);
+  string readLink(string path);
 };
 #endif
 
