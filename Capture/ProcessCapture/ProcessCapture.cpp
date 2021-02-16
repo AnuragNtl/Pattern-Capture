@@ -4,7 +4,7 @@
 
 using namespace PatternCapture;
 
-ProcessDetails ProcessCapture :: capture(map<string, string> params) const {
+ProcessDetails ProcessCapture :: capture(map<string, string> params) {
     string pid = params["pid"];
     string basePath = "/proc/" + pid + "/";
     std::ifstream in(basePath + "cmdline");
@@ -13,6 +13,7 @@ ProcessDetails ProcessCapture :: capture(map<string, string> params) const {
     processDetails.pid = pid;
     processDetails.cwd = readLink(basePath + "/cwd");
     processDetails.processName = readLink(basePath + "/exe");
+    return processDetails;
 }
 
 vector<string> getDependencyTypes() {
@@ -21,6 +22,10 @@ vector<string> getDependencyTypes() {
 
 Dependency* getDependency(const char *dependencyName) {
     return new ProcessCapture;
+}
+
+string ProcessCapture :: getId() const {
+    return "processCapture";
 }
 
 

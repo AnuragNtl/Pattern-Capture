@@ -5,6 +5,7 @@
 #include "../CaptureSource.h"
 
 using namespace std;
+using namespace PatternCapture;
 
 namespace PatternCapture {
 
@@ -18,7 +19,7 @@ namespace PatternCapture {
 
     class ProcessCapture : public CaptureSource<ProcessDetails> {
         public:
-            ProcessDetails capture(map<string, string>) const;
+            ProcessDetails capture(map<string, string>);
             string getId() const;
     };
 };
