@@ -10,8 +10,6 @@ using namespace std; using namespace PatternCapture;
 
 void processGraph(string parser, string data);
 
-string getContents(istream &&);
-
 void showUsage();
 
 int main(int argc, char *argv[]) {
@@ -54,20 +52,4 @@ void showUsage() {
 }
 
 #define BUF_LEN 1024
-
-string getContents(istream &&in) {
-    string data = "";
-    char buffer[BUF_LEN];
-    while(!in.eof()) {
-        in.getline(buffer, 1023);
-        int count = in.gcount();
-        buffer[count] = '\0';
-        data.append(buffer);
-    }
-        std::ifstream *file = dynamic_cast<std::ifstream*>(&in);
-    if(file != NULL) {
-        file->close();
-    }
-    return data;
-}
 

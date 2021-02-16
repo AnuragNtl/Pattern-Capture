@@ -12,6 +12,15 @@ ProcessDetails ProcessCapture :: capture(map<string, string> params) const {
     processDetails.cmdline = getContents(std::move(in));
     processDetails.pid = pid;
     processDetails.cwd = readLink(basePath + "/cwd");
+    processDetails.processName = readLink(basePath + "/exe");
+}
+
+vector<string> getDependencyTypes() {
+    return {"capture"};
+}
+
+Dependency* getDependency(const char *dependencyName) {
+    return new ProcessCapture;
 }
 
 

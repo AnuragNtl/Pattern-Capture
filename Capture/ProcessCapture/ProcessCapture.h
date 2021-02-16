@@ -13,6 +13,7 @@ namespace PatternCapture {
                pid,
                tty,
                start, time, cmdline, cwd;
+        string environment;
     };
 
     class ProcessCapture : public CaptureSource<ProcessDetails> {

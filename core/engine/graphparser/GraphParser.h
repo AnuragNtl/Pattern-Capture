@@ -11,6 +11,16 @@
 
 #define NATIVE_ENGINE "nativeEngine"
 
+#define NODE_ID "id"
+#define NODE_TYPE "type"
+#define NODE_DEPENDENCY_ID "dependencyId"
+#define NODE_DELIVERS_TO "deliversToNodes"
+#define NODE_ACCEPTS_FROM "acceptsFromNodes"
+#define NODE_INPUT_PARAMS "inputParams"
+#define GRAPH_PROPERTIES "graphProperties"
+#define HOOKS_PROPERTIES "hooksProperties"
+
+
 #define DEFAULT_ENGINE NATIVE_ENGINE
 
 using namespace std;
