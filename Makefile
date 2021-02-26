@@ -14,7 +14,7 @@ BUILD_LIB=$(GXX) $(FLAGS) -I . -L lib/ -c -Wall -Werror -fpic $(DEPENDENCY_FILES
 
 build_library=$(GXX) $(FLAGS) $(4) -I $(current_dir) -L $(current_dir)lib/ -c -Wall -Werror -fpic $(1) -o $(current_dir)$(2).out $(3) && $(GXX) -L $(current_dir)lib/ -shared -o $(current_dir)lib/lib$(2).so $(current_dir)$(2).out -Wl,-z,defs $(3)
 
-all: CommonUtils PatternCapture Captures Transforms HookLib Hooks ApiClientLib
+all: CommonUtils PatternCapture Captures Transforms HookLib Hooks ApiClientLib Common
 
 build_lib: 
 	$(BUILD_LIB)

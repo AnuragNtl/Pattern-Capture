@@ -43,7 +43,7 @@ void YamlGraphParser :: addHookProperties(Graph &graph, const YAML::Node &hookSp
 
 Node* YamlGraphParser :: addNodeFrom(const YAML::Node &node, Node *comesFrom, Graph &graph) {
     bool isRoot = false;
-    string nodeId = node[NODE_ID][0].as<string>(),
+    string nodeId = node[NODE_ID].as<string>(),
            type = node[NODE_TYPE] ? node[NODE_TYPE].as<string>() : string(),
            dependencyId = node[NODE_DEPENDENCY_ID].as<string>();
            YAML::Node deliversToNodes = node[NODE_DELIVERS_TO],
@@ -69,7 +69,7 @@ Node* YamlGraphParser :: addNodeFrom(const YAML::Node &node, Node *comesFrom, Gr
     Node *graphNode = graph.addNode(nodeId, type, dependencyId, acceptsFromNodes, inputParams);
     graphNode->isRoot = isRoot;
     for(const auto &deliversToNode : deliversToNodes) {
-        Node *deliversToGraphNode = addNodeFrom(deliversToNode.second, graphNode, graph);
+        Node *deliversToGraphNode = addNodeFrom(deliversToNode, graphNode, graph);
         graphNode->addDeliversToNode(deliversToGraphNode);
     }
     return graphNode;
