@@ -2,19 +2,23 @@
 
 #define PROCESS_CAPTURE_H
 
+#include "../../StringSerializable.h"
 #include "../CaptureSource.h"
+#include "../../nlohmann/json.hpp"
 
 using namespace std;
 using namespace PatternCapture;
 
 namespace PatternCapture {
 
-    struct ProcessDetails {
+    struct ProcessDetails : public StringSerializable {
         string processName,
                pid,
                tty,
                start, time, cmdline, cwd;
         string environment;
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(ProcessDetails, processName, pid, tty, start, time, cmdline, cwd, environment)
+        operator string() const;
     };
 
     class ProcessCapture : public CaptureSource<ProcessDetails> {
