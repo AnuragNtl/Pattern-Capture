@@ -22,7 +22,7 @@ string getContents(istream &&in) {
         in.getline(buffer, BUF_LEN - 1);
         int count = in.gcount();
         buffer[count] = '\0';
-        data.append(buffer);
+        data.append(string(buffer) == "" ? buffer : string("\n") + buffer);
     }
         std::ifstream *file = dynamic_cast<std::ifstream*>(&in);
     if(file != NULL) {

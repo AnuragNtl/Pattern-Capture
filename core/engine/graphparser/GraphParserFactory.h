@@ -11,7 +11,8 @@ class GraphParserFactory {
     private:
         map<string, GraphParser*> parsers;
     public:
-        static const string GRAPH_PARSER_JSON;
+        static const string GRAPH_PARSER_JSON,
+                     GRAPH_PARSER_YAML;
         GraphParserFactory();
         GraphParser* getGraphParser(string);
         ~GraphParserFactory();

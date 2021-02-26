@@ -5,6 +5,7 @@ using namespace PatternCapture;
 
 Graph* YamlGraphParser :: parse(const char *graphSpec) {
     istringstream in(graphSpec);
+    cout << graphSpec << "\n";
     YAML::Node doc = YAML::Load(graphSpec);
     if(!doc.IsMap()) {
         throw std::exception();
@@ -42,7 +43,7 @@ void YamlGraphParser :: addHookProperties(Graph &graph, const YAML::Node &hookSp
 
 Node* YamlGraphParser :: addNodeFrom(const YAML::Node &node, Node *comesFrom, Graph &graph) {
     bool isRoot = false;
-    string nodeId = node[NODE_ID].as<string>(),
+    string nodeId = node[NODE_ID][0].as<string>(),
            type = node[NODE_TYPE] ? node[NODE_TYPE].as<string>() : string(),
            dependencyId = node[NODE_DEPENDENCY_ID].as<string>();
            YAML::Node deliversToNodes = node[NODE_DELIVERS_TO],

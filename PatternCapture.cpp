@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     } else {
         spec = getContents(std::move(cin));
     }
-    processGraph("graphParserJson", spec);
+    processGraph("graphParserYaml", spec);
 
   return 0;
 }

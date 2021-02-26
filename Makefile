@@ -23,8 +23,8 @@ HookLib:
 	$(MAKE) build_lib DEPENDENCY_FILES=core/engine/hooks/Hooks.cpp TARGET_NAME=Hooks
 
 
-PatternCapture : Dependencies.cpp  PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/scheduler/Scheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp
-	$(GXX) $(FLAGS) -I . -L lib/ -Wall -Werror $^ -o bin/$@ -lboost_system -lboost_filesystem -ldl -lpthread -lCommonUtils
+PatternCapture : Dependencies.cpp  PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp
+	$(GXX) $(FLAGS) -I . -L lib/ -Wall -Werror $^ -o bin/$@ -lboost_system -lboost_filesystem -ldl -lpthread -lCommonUtils -lyaml-cpp
 
 
 crawl_and_build=@for i in $$(ls $(1)); do if [ -d "$(1)/$$i" ]; then if [ -e "$(1)/$$i/Makefile" ]; then echo "Makefile exists " && make -C $(1)/$$i/ $$i ; else make -C . build_lib  DEPENDENCY_FILES=$$(ls -d $$(pwd)/$(1)/$$i/*.cpp) TARGET_NAME=$$i LIB_LOAD=$(2) ; fi; fi; done;

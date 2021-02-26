@@ -1,10 +1,13 @@
 #include "GraphParserFactory.h"
 #include "JsonGraphParser/JsonGraphParser.h"
+#include "YamlGraphParser/YamlGraphParser.h"
 
 using namespace PatternCapture;
 
 GraphParserFactory :: GraphParserFactory() {
     parsers[GRAPH_PARSER_JSON] = new JsonGraphParser();
+    parsers[GRAPH_PARSER_YAML] = new YamlGraphParser
+        ;
 }
 
 GraphParser* GraphParserFactory ::  getGraphParser(string parserName) {
@@ -12,7 +15,7 @@ GraphParser* GraphParserFactory ::  getGraphParser(string parserName) {
 
         throw  GraphParseException("No graph parser " + parserName + " found");
     }
-    return parsers[GRAPH_PARSER_JSON];
+    return parsers[parserName];
 }
 
 GraphParserFactory :: ~GraphParserFactory() {
@@ -23,4 +26,5 @@ GraphParserFactory :: ~GraphParserFactory() {
 }
 
 const string GraphParserFactory :: GRAPH_PARSER_JSON = "graphParserJson";
+const string GraphParserFactory :: GRAPH_PARSER_YAML = "graphParserYaml";
 
