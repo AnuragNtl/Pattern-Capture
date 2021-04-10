@@ -3,7 +3,7 @@
 #define HOOKS_H
 
 #include "../graphparser/GraphParser.h"
-#include <Dependencies.h>
+#include "Dependencies.h"
 #include <string>
 #include <map>
 

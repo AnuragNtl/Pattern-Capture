@@ -1,5 +1,5 @@
 #include "Scheduler.h"
-#include <Dependencies.h>
+#include "Dependencies.h"
 #include <vector>
 #include <algorithm>
 #include <thread>
@@ -22,7 +22,17 @@ void Scheduler :: execute(const Graph &graph) {
     cout << graph << "\n";
     initializeHooks(graph, executeBefore, executeAfter);
     validateGraph(graph);
-    executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
+    switch(graph.repeatType) {
+        case ONCE:
+            executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
+            break;
+        case CONTINUOUS:
+            for(int i = 0; i < graph.repeatTimes; i++) {
+                executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
+            }
+            break;
+        default: break;
+    }
 }
 
 void Scheduler :: initializeHooks(const Graph &graph, vector<Hook*> &executeBefore, vector<Hook*> &executeAfter) {

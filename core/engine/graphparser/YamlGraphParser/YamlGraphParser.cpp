@@ -21,7 +21,7 @@ void YamlGraphParser :: addGraphProperties(Graph &graph, const YAML::Node &node)
     const YAML::Node graphProperties = node[GRAPH_PROPERTIES];
     if(graphProperties.IsDefined() && graphProperties.IsMap()) {
         for(const auto &property : graphProperties) {
-            graph.properties[property.first.as<string>()] = property.second.as<string>();
+            graph.addProperty(property.first.as<string>(), property.second.as<string>());
         }
     }
 

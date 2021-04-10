@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <Dependencies.h>
+#include "Dependencies.h"
 #include <iostream>
 
 #define NATIVE_ENGINE "nativeEngine"
@@ -55,13 +55,14 @@ using namespace std;
         friend ostream& operator<<(ostream &out, const HookProperties &);
     };
 
+    enum NodeRepeat { ONCE, CONTINUOUS, SCHEDULED};
     struct Graph {
       private:
         map<string, Node *> nodeIdWiseMap;
+        map<string, string> properties;
       public:
         map<string, HookProperties > hookProperties;
         set<Node *> rootNodes;
-        map<string, string> properties;
         Graph();
         ~Graph();
         Node* addNode(string, string, string, set<string> acceptsFrom, map<string, string> inputParams);
@@ -71,7 +72,17 @@ using namespace std;
         operator string();
         string toString();
         HookProperties& operator[](string);
+        void addProperty(string name, string value);
+        NodeRepeat repeatType;
+        int repeatTimes;
+        friend class GraphPropertyHook;
     };
+
+    class GraphPropertyHook {
+        public:
+            virtual void operator()(Graph &graph, map<string, string> &properties) const = 0;
+    };
+
     class GraphParser {
     public:
       virtual Graph* parse(const char *input) = 0;

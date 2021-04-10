@@ -7,10 +7,11 @@ matrix:
 before_script:
     - mkdir bin
     - mkdir lib
+    - mkdir build
     - which cmake
     - git clone https://github.com/jbeder/yaml-cpp.git && cd yaml-cpp && mkdir build && cd build && cmake .. && cmake --build . && sudo $(which cmake) --install . && cd ../..
     - wget https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.bz2 && tar xvf boost_1_74_0.tar.bz2 > /dev/null && cd boost_1_74_0 && ./bootstrap.sh --with-libraries=filesystem,system --prefix=/usr > /dev/null && sudo ./b2 stage threading=multi link=shared > /dev/null && sudo ./b2 install > /dev/null
 
 script:
-    - cd .. && make
+    - cd ../build && cmake .. && cmake --build .
 

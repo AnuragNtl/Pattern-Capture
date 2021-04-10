@@ -2,7 +2,7 @@
 
 #include <string>
 using namespace std;
-#include <Dependencies.h>
+#include "Dependencies.h"
 
 namespace PatternCapture {
 

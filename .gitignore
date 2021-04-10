@@ -5,3 +5,4 @@ lib
 .ccls-cache
 .vimspector.json
 javacpp-platform-1.5.3-bin/
+build/

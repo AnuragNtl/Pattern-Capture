@@ -70,7 +70,7 @@ Node* JsonGraphParser :: addNodeFrom(ptree node, Node *comesFrom, Graph &graph) 
 void JsonGraphParser :: addGraphProperties(Graph &graph, const ptree &root) {
     ptree graphPropertiesSpec = root.get_child_optional(GRAPH_PROPERTIES).value_or(empty_ptree);
     for(auto propertySpec : graphPropertiesSpec) {
-        graph.properties[propertySpec.first] = propertySpec.second.get_value<string>();
+        graph.addProperty(propertySpec.first, propertySpec.second.get_value<string>());
     }
     
 }

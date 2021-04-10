@@ -41,8 +41,8 @@ namespace PatternCapture {
     deliversToNodes.erase(node);
   }
 
-  Graph :: Graph() {
-
+  Graph :: Graph() : repeatTimes(1) {
+      this->repeatType = ONCE;
   }
 
   Node* Graph :: addNode(string id, string type, string dependencyId, set<string> acceptsFrom, map<string, string> inputParams) {
@@ -148,6 +148,12 @@ namespace PatternCapture {
           out << "    " << hookPropertyPair.first << " " << hookPropertyPair.second << "\n";
       return out;
   }
+  
+  void Graph :: addProperty(string name, string value) {
+      properties[name] = value;
+  }
+
+
   
 };
 

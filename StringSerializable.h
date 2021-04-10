@@ -9,7 +9,7 @@ using namespace std;
 namespace PatternCapture {
 
     class StringSerializable {
-        private:
+        protected:
             string data;
         public:
             StringSerializable() = default;
