@@ -14,6 +14,8 @@ include_directories(
 
 add_library(CommonUtils SHARED CommonUtils.cpp)
 
+add_subdirectory(googletest)
+
 add_subdirectory(yaml-cpp)
 
 
