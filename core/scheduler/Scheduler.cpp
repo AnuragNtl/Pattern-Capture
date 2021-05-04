@@ -5,6 +5,7 @@
 #include <thread>
 #include <future>
 #include <iostream>
+#include "SchedulerFactory.h"
 
 using namespace std;
 
@@ -22,7 +23,12 @@ void Scheduler :: execute(const Graph &graph) {
     cout << graph << "\n";
     initializeHooks(graph, executeBefore, executeAfter);
     validateGraph(graph);
-    switch(graph.repeatType) {
+    SchedulerFactory schedulerFactory;
+    GraphScheduler *graphScheduler = schedulerFactory.getScheduler(graph.repeatType);
+    (*graphScheduler)(graph, [this, &graph, &executeBefore, &executeAfter] () {
+            executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
+            });
+    /*switch(graph.repeatType) {
         case ONCE:
             executeNodes(graph, executeBefore, executeAfter, graph.rootNodes.begin(), graph.rootNodes.end());
             break;
@@ -32,7 +38,7 @@ void Scheduler :: execute(const Graph &graph) {
             }
             break;
         default: break;
-    }
+    }*/
 }
 
 void Scheduler :: initializeHooks(const Graph &graph, vector<Hook*> &executeBefore, vector<Hook*> &executeAfter) {

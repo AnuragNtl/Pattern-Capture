@@ -18,9 +18,12 @@ add_subdirectory(googletest)
 
 add_subdirectory(yaml-cpp)
 
+add_subdirectory(libcron)
+
+#add_subdirectory(date)
 
 
-add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp)
+add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/scheduler/SchedulerFactory.cpp core/scheduler/ContinuousScheduler.cpp core/scheduler/OnceScheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp)
 
 target_link_libraries(PatternCapture boost_system boost_filesystem dl pthread CommonUtils yaml-cpp)
 

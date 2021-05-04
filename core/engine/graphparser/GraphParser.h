@@ -6,8 +6,8 @@
 #include <vector>
 #include <map>
 #include <set>
-#include "Dependencies.h"
 #include <iostream>
+#include "Dependencies.h"
 
 #define NATIVE_ENGINE "nativeEngine"
 
@@ -76,12 +76,15 @@ using namespace std;
         NodeRepeat repeatType;
         int repeatTimes;
         friend class GraphPropertyHook;
+        friend ostream& operator<<(ostream&, const Graph &);
     };
 
     class GraphPropertyHook {
         public:
             virtual void operator()(Graph &graph, map<string, string> &properties) const = 0;
     };
+
+
 
     class GraphParser {
     public:

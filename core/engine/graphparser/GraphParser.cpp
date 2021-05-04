@@ -2,10 +2,12 @@
 #include <algorithm>
 #include <sstream>
 #include <boost/algorithm/string.hpp>
+#include "GraphPropertyHooks.h"
 
 using namespace boost;
 
 namespace PatternCapture {
+
 
   Node :: Node(string id, string type, string dependencyId, set<Node *> acceptsFromNodes, map<string, string> inputParams, bool isRoot, string executeWithEngine) : id(id), type(type), dependencyId(dependencyId), acceptsFromNodes(acceptsFromNodes),  inputParams(inputParams), executeWithEngine(executeWithEngine), dependency(NULL) {
     addAcceptsFromNodes();
@@ -99,6 +101,14 @@ namespace PatternCapture {
           out << hookPropertiesPair.first << "\n";
           out << hookPropertiesPair.second << "\n";
       }
+      out << "Graph Properties : \n";
+      for(const auto &graphPropertyPair : graph.properties) {
+
+          out << graphPropertyPair.first << " : " << graphPropertyPair.second << "\n";
+      }
+      out << "Details : \n";
+      out << "repeatType : " << graph.repeatType << "\n";
+      out << "repeatTimes : " << graph.repeatTimes << "\n";
       for(const Node *node : graph.rootNodes) {
           out << *node;
       }
@@ -151,6 +161,9 @@ namespace PatternCapture {
   
   void Graph :: addProperty(string name, string value) {
       properties[name] = value;
+      for(const auto *propertyHook : GRAPH_PROPERTY_HOOKS) {
+          (*propertyHook)(*this, properties);
+      }
   }
 
 
