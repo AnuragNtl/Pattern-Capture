@@ -3,7 +3,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <cstring>
-
+#include <cmath>
 
 
 namespace PatternCapture {
@@ -24,8 +24,9 @@ namespace PatternCapture {
             struct tm *timeDetails = localtime(&cronNext);
             strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", timeDetails);
             cout << buffer << "\n";
-            double timeDiff = difftime(cronNext, scheduledTime);
-            //usleep(timeDiff * 1);
+            double timeDiff = abs(difftime(scheduledTime, cronNext));
+            cout << "timediff = " << timeDiff <<"\n";
+            usleep(timeDiff * 1000000);
             cronNext = scheduledTime;
         } while(true);
     }
