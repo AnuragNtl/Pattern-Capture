@@ -9,6 +9,7 @@
 #define NODE_REPEAT_KEY "repeat"
 #define SCHEDULED_VALUE "SCHEDULED"
 #define REPEAT_TIMES_KEY "repeatTimes"
+#define SCHEDULE_KEY "schedule"
 
 using namespace PatternCapture;
 
@@ -36,6 +37,9 @@ namespace PatternCapture {
         }
         if(properties.find(REPEAT_TIMES_KEY) != properties.end()) {
             graph.repeatTimes = stoi(properties[REPEAT_TIMES_KEY]);
+        }
+        if(properties.find(SCHEDULE_KEY) != properties.end()) {
+            graph.schedule = properties[SCHEDULE_KEY];
         }
     }
     

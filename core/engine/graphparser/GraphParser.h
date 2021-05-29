@@ -77,6 +77,7 @@ using namespace std;
         int repeatTimes;
         friend class GraphPropertyHook;
         friend ostream& operator<<(ostream&, const Graph &);
+        string schedule;
     };
 
     class GraphPropertyHook {

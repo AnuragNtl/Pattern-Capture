@@ -1,6 +1,7 @@
 #include "SchedulerFactory.h"
 #include "ContinuousScheduler.h"
 #include "OnceScheduler.h"
+#include "CronScheduler.h"
 
 
 
@@ -27,7 +28,7 @@ namespace PatternCapture {
 
         NODE_REPEAT_MAP[CONTINUOUS] = new ContinuousScheduler;
         NODE_REPEAT_MAP[ONCE] = new OnceScheduler;
-        //NODE_REPEAT_MAP[SCHEDULED] = 
+        NODE_REPEAT_MAP[SCHEDULED] = new CronScheduler;
     }
 
     map<NodeRepeat, GraphScheduler*> SchedulerFactory :: NODE_REPEAT_MAP = map<NodeRepeat, GraphScheduler*>();

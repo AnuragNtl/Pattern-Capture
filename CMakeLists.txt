@@ -18,18 +18,14 @@ add_subdirectory(googletest)
 
 add_subdirectory(yaml-cpp)
 
-add_subdirectory(libcron)
 
-#add_subdirectory(date)
-
-
-add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/scheduler/SchedulerFactory.cpp core/scheduler/ContinuousScheduler.cpp core/scheduler/OnceScheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp)
+add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/scheduler/SchedulerFactory.cpp core/scheduler/ContinuousScheduler.cpp core/scheduler/OnceScheduler.cpp core/scheduler/CronScheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp ccronexpr/ccronexpr.c)
 
 target_link_libraries(PatternCapture boost_system boost_filesystem dl pthread CommonUtils yaml-cpp)
 
 target_link_libraries(CommonUtils boost_system boost_filesystem pthread)
 
-target_include_directories(PatternCapture PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(PatternCapture PUBLIC "${PROJECT_BINARY_DIR}" )
 
 add_library(Hooks SHARED core/engine/hooks/Hooks.cpp)
 
