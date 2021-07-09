@@ -4,7 +4,6 @@
 
 #include "../../StringSerializable.h"
 #include "../CaptureSource.h"
-#include "../../nlohmann/json.hpp"
 
 using namespace std;
 using namespace PatternCapture;
@@ -17,8 +16,7 @@ namespace PatternCapture {
                tty,
                start, time, cmdline, cwd;
         string environment;
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(ProcessDetails, processName, pid, tty, start, time, cmdline, cwd, environment)
-        operator string() const;
+        TO_JSON_STRING(ProcessDetails, processName, pid, tty, start, time, cmdline, cwd, environment)
     };
 
     class ProcessCapture : public CaptureSource<ProcessDetails> {

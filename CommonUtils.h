@@ -22,6 +22,7 @@ namespace PatternCapture {
   vector<string> listDirectory(string);
   string getContents(istream &&in);
   string readLink(string path);
+  bool isNumeric(string);
 };
 #endif
 

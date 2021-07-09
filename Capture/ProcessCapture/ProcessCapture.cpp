@@ -5,13 +5,6 @@
 using namespace PatternCapture;
 using nlohmann::json;
 
-ProcessDetails :: operator string() const {
-    json data;
-    to_json(data, *this);
-    cout << data.dump() << "\n";
-    return data.dump();
-}
-
 ProcessDetails ProcessCapture :: capture(map<string, string> params) {
     string pid = params["pid"];
     string basePath = "/proc/" + pid + "/";
