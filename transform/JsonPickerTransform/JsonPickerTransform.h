@@ -8,10 +8,10 @@
 
 using namespace PatternCapture;
 
-class JsonPickerTransform : public Transform<string, string> {
+class JsonPickerTransform : public virtual Transform<string, string> {
     public:
-        string getId() const;
-        string transform(string input, map<string, string> inputParams) const;
+        virtual string getId() const;
+        virtual string transform(string input, map<string, string> inputParams) const;
 };
 
 DEPENDENCY_DECLARATION

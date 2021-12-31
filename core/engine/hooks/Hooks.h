@@ -14,12 +14,18 @@ using namespace PatternCapture;
 
 namespace PatternCapture {
     
-    enum HookType { EXECUTE_BEFORE, EXECUTE_AFTER };
+    enum HookType { EXECUTE_BEFORE, EXECUTE_AFTER, EXECUTE_ON_CALL };
+    struct HookData {
+        const Node &node;
+        const HookProperties &hookProperties;
+        string message;
+        HookData(const Node &, const HookProperties &);
+    };
+
    class Hook : public virtual Dependency {
         public:
             virtual HookType getHookType() = 0;
-            virtual void executeHook(const Node &) {};
-            virtual void executeHook(const Node &, map<string, string>) {}
+            virtual void executeHook(const HookData &) { }
             virtual void* operator()(void *);
             virtual void* operator()(void *, std::map<std::string, std::string>);
     };

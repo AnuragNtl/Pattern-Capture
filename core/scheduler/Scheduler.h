@@ -29,6 +29,7 @@ using namespace std;
 #include "../engine/graphparser/GraphParser.h"
 #include <thread>
 #include <future>
+#include <mutex>
 
 using namespace PatternCapture;
 
@@ -37,15 +38,20 @@ namespace PatternCapture {
     class Scheduler {
 
         private:
-            void initializeHooks(const Graph &graph, vector<Hook*> &, vector<Hook*> &);
+            void executeOnCallHook(Hook *hook);
+            void initializeHooks(const Graph &graph, vector<Hook*> &, vector<Hook*> &, vector<Hook*> &executeOnCall);
             void validateGraph(const Graph &);
             void validateAndAssignDependencies(const Graph &); 
             void validateAndAssignAllDependencies(Node *node);
             void executeNodes(const Graph &, const vector<Hook*> &, const vector<Hook*> &, const set<Node*> :: iterator &, const set<Node*> :: iterator&, void *inputData = NULL);
             static void executeSingleNode(const Graph &, const vector<Hook*> &&, const vector<Hook*> &&, Node &, Scheduler *scheduler, void *inputData = NULL);
+            vector<Hook*> executeOnCall;
+            const Graph &graph;
+            mutex callbackHookMutex;
         public:
-            Scheduler();
-            void execute(const Graph &);
+            Scheduler(const Graph &);
+            void execute();
+            void executeOnCallHook(HookProperties &hookProperties);
     };
 };
 

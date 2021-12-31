@@ -1,5 +1,7 @@
 #ifndef TRANSFORM_H
 
+#define TRANSFORM_H
+
 #include <string>
 using namespace std;
 #include "Dependencies.h"

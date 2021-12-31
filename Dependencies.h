@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <functional>
 
 using namespace std;
 
@@ -13,7 +14,9 @@ using namespace std;
 #define PLUGINS_DIRECTORY "lib/"
 #define LIB_EXTENSION ".so"
 
+
 namespace PatternCapture {
+    class HookProperties;
   class DependencyManager {
     private:
     void* loadDependency(void *dependencyHandle, const char *dependencyName);
@@ -36,15 +39,36 @@ namespace PatternCapture {
   };
 
   class Dependency {
-    public:
-      virtual string getId() const = 0;
-      virtual void* operator()(void *input) { return NULL; }
-      virtual void* operator()(void *input, map<string, string> params) {
-          if(params.size() == 0)
-              return (*this)(input);
-          return NULL; 
-      }
+      private:
+          function<void(const HookProperties &)> onHookCall;
+      public:
+          Dependency() : onHookCall([] (const HookProperties &) { }) { }
+          virtual string getId() const = 0;
+          virtual void* operator()(void *input) { return NULL; }
+          virtual void* operator()(void *input, map<string, string> params) {
+              if(params.size() == 0)
+                  return (*this)(input);
+              return NULL; 
+          }
+          void callHook(const HookProperties &hookProperties) {
+              this->onHookCall(hookProperties);
+          }
+          virtual ~Dependency() {}
+          void setOnHookCall(function<void(const HookProperties &)> onHookCall) {
+              this->onHookCall = onHookCall;
+          }
   };
+
+  /*Dependency :: Dependency() : onHookCall([] (const HookProperties &) {})   { }
+
+  void Dependency :: setOnHookCall(function<void(const HookProperties &)> onHookCall) {
+      this->onHookCall = onHookCall;
+  }
+
+  void Dependency :: callHook(const HookProperties &hookProperties) {
+      this->onHookCall(hookProperties);
+  }
+*/
   struct DependencyKey {
     string dependencyName;
     string dependencyId;

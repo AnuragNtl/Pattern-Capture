@@ -14,7 +14,7 @@ class StatusHook : public Hook {
         StatusHook();
         HookType getHookType();
         string getId() const;
-        void executeHook(const Node &); 
+        void executeHook(const HookData &); 
         static void printStatus(StatusHook *);
 };
 

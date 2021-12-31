@@ -23,11 +23,24 @@ namespace PatternCapture {
             string data;
         public:
             StringSerializable() = default;
-            StringSerializable(StringSerializable &other) { this->data = (string)other; }
-            StringSerializable(const vector<StringSerializable> &);
-            StringSerializable(const vector<String
+            StringSerializable(const StringSerializable &other) { this->data = (string)other; }
             virtual operator string() const { return data; }
     };
+
+    /*template<class T>
+    void to_json(nlohmann::json &data, const vector<T> &stringSerializables) {
+        for(const auto &item : stringSerializables) {
+            nlohmann::json itemData;
+            to_json(itemData, item);
+            data.push_back(itemData);
+        }
+    }*/
+
+    template<class T>
+    T loadJson(string raw) {
+        nlohmann::json data = nlohmann::json::parse(raw);
+        return data.get<T>();
+    }
         
 };
 

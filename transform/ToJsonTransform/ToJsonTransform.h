@@ -7,10 +7,10 @@
 
 using namespace PatternCapture;
 
-class ToJsonTransform : public Transform<StringSerializable, string> {
+class ToJsonTransform : public virtual Transform<StringSerializable, string> {
     public:
-        string getId() const;
-        string transform(StringSerializable, map<string, string>) const;
+        virtual string getId() const;
+        virtual string transform(StringSerializable, map<string, string>) const;
 };
 
 extern "C" {

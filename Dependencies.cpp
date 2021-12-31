@@ -113,5 +113,16 @@ namespace PatternCapture {
       return dependencyTypeWiseTable.find(dependencyKey) != dependencyTypeWiseTable.end();
   }
 
+  //Dependency :: Dependency() {
+      //this->onHookCall = [] (const HookProperties &) { };
+  //}
+/*
+  void Dependency :: setOnHookCall(function<void(const HookProperties &)> onHookCall) {
+      this->onHookCall = onHookCall;
+  }
+
+  void Dependency :: callHook(const HookProperties &hookProperties) {
+      onHookCall(hookProperties);
+  }*/
 };
 

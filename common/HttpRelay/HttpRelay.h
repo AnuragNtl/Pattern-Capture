@@ -50,7 +50,8 @@ namespace PatternCapture {
             HookType hookType;
         public:
             HookType getHookType();
-            void executeHook(const Node&, map<string, string> inputParams);
+            void executeHook(const HookData&);
+            string getId() const;
     };
 
 };

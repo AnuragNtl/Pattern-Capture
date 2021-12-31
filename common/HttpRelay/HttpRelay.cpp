@@ -177,12 +177,23 @@ void HttpRelayDependency :: loadParams(map<string, string> &params) {
 
 map<string, http::verb> HttpRelayDependency :: httpVerbMap = map<string, http::verb>();
 
-void HttpRelayHook :: executeHook(const Node& node, map<string, string> inputParams) {
+string HttpRelayHook :: getId() const {
+
+    return "httpRelayHook";
+
+}
+
+void HttpRelayHook :: executeHook(const HookData &hookData) {
+
+    const Node &node = hookData.node;
+    map<string, string> inputParams = hookData.hookProperties.properties;
 
     if(inputParams["hookType"] == "EXECUTE_BEFORE") {
         hookType = EXECUTE_BEFORE;
-    } else {
+    } else if(inputParams["hookType"] == "EXECUTE_AFTER") {
         hookType = EXECUTE_AFTER;
+    } else { 
+        hookType = EXECUTE_ON_CALL;
     }
     HttpRelayDependency relayDependency;
     relayDependency.getOutput(string(), inputParams);
@@ -190,13 +201,17 @@ void HttpRelayHook :: executeHook(const Node& node, map<string, string> inputPar
 
 vector<string> getDependencyTypes() {
 
-    return {"httpRelayDependency"};
+    return {"httpRelayDependency", DEPENDENCY_TYPE_HOOKS};
 
 }
 
 Dependency* getDependency(const char *dependencyName) {
 
-    return new HttpRelayDependency;
+    if(string(dependencyName) == DEPENDENCY_TYPE_HOOKS) {
+        return new HttpRelayHook;
+    } else {
+        return new HttpRelayDependency;
+    }
 
 }
 

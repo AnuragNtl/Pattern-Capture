@@ -1,0 +1,3 @@
+add_library(ProcessesCapture SHARED ProcessesCapture.cpp)
+target_link_libraries(ProcessesCapture boost_system boost_filesystem CommonUtils)
+

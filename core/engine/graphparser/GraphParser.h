@@ -53,6 +53,7 @@ using namespace std;
         map<string, string> properties;
         string& operator[](string);
         friend ostream& operator<<(ostream &out, const HookProperties &);
+        bool hasProperty(string id) const;
     };
 
     enum NodeRepeat { ONCE, CONTINUOUS, SCHEDULED};

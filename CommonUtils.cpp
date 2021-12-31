@@ -19,10 +19,10 @@ string getContents(istream &&in) {
     string data = "";
     char buffer[BUF_LEN];
     while(!in.eof()) {
-        in.getline(buffer, BUF_LEN - 1);
+        in.read(buffer, BUF_LEN - 1);
         int count = in.gcount();
         buffer[count] = '\0';
-        data.append(string(buffer) == "" ? buffer : string("\n") + buffer);
+        data.append(string(buffer));
     }
         std::ifstream *file = dynamic_cast<std::ifstream*>(&in);
     if(file != NULL) {
@@ -40,10 +40,24 @@ string readLink(string path) {
     } else {
         buf[0] = '\0';
     }
-    return string(buf);
+    string data = string(buf);
+    delete[] buf;
+    return data;
 
 }
 
+bool isNumeric(string data) {
+    for(char item : data) {
+        if(!std::isdigit(item)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool pathExists(string path) {
+    return exists(path);
+}
 
 };
 

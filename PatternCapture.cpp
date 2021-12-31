@@ -40,8 +40,8 @@ void processGraph(string parser, string data) {
     GraphParserFactory graphParserFactory;
     GraphParser *graphParser = graphParserFactory.getGraphParser(parser);
     Graph *graph = graphParser->parse(data.c_str());
-    Scheduler *scheduler = new Scheduler;
-    scheduler->execute(*graph);
+    Scheduler *scheduler = new Scheduler(*graph);
+    scheduler->execute();
 }
 
 void showUsage() {

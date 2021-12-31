@@ -167,6 +167,9 @@ namespace PatternCapture {
   }
 
 
+  bool HookProperties :: hasProperty(string id) const {
+      return properties.find(id) != properties.end();
+  }
   
 };
 

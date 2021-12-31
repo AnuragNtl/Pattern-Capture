@@ -9,11 +9,15 @@ string JsonPickerTransform :: getId() const {
 
 string JsonPickerTransform :: transform(string input, map<string, string> inputParams) const {
     json data = json::parse(input);
-    if(data.is_array()) {
-        int key = stoi(inputParams["key"]);
-        return data[key];
+    if(inputParams["key"] == "*") {
+        return data.dump();
     } else {
-        return data[inputParams["key"]];
+        if(data.is_array()) {
+            int key = stoi(inputParams["key"]);
+            return data[key].dump();
+        } else {
+            return data[inputParams["key"]].dump();
+        }
     }
 }
 

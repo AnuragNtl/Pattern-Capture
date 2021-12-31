@@ -4,7 +4,9 @@
 
 
 #include "../CaptureSource.h"
+#include "ProcessesData.h"
 
+using namespace PatternCapture;
 
 class ProcessesCapture : public CaptureSource<ProcessesData> {
     ProcessesData capture(map<string, string> input);

@@ -3,16 +3,23 @@
 #define PROCESSES_DATA
 
 #include <time.h>
+#include <vector>
 
-namespace PatternCapture {
+#include "../../StringSerializable.h"
 
-    struct ProcessesData : public StringSerializable {
+using namespace PatternCapture;
+
+    struct ProcessData : public StringSerializable {
         string user, pid, tty;
         time_t time, start;
         string command;
-        TO_JSON_STRING(user, pid, tty, time, start, command);
+        TO_JSON_STRING(ProcessData, user, pid, tty, time, start, command);
     };
-};
+
+    struct ProcessesData : public StringSerializable {
+        vector<ProcessData> processesData;
+        TO_JSON_STRING(ProcessesData, processesData);
+    };
 
 #endif
 

@@ -23,6 +23,7 @@ namespace PatternCapture {
   string getContents(istream &&in);
   string readLink(string path);
   bool isNumeric(string);
+  bool pathExists(string);
 };
 #endif
 

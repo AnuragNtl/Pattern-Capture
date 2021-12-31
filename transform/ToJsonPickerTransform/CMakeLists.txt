@@ -1,0 +1,3 @@
+add_library(ToJsonPickerTransform SHARED ToJsonPickerTransform.cpp)
+target_link_libraries(ToJsonPickerTransform ToJsonTransform JsonPickerTransform)
+

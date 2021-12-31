@@ -32,11 +32,11 @@ void StatusHook :: printStatus(StatusHook *statusHook) {
     }
 }
 
-void StatusHook :: executeHook(const Node &node) {
+void StatusHook :: executeHook(const HookData &hookData) {
 
 
     statusMutex.lock();
-    currentlyExecutingDependencies.insert(node.dependency->getId());
+    currentlyExecutingDependencies.insert(hookData.node.dependency->getId());
     statusMutex.unlock();
 }
 
