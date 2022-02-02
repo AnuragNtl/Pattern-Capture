@@ -31,7 +31,7 @@ void YamlGraphParser :: addAllHooksProperties(Graph &graph, const YAML::Node &no
     const auto &hookProperties = node[HOOKS_PROPERTIES];
     if(!(hookProperties.IsDefined() && hookProperties.IsMap())) return;
     for(const auto &hookSpecItem : hookProperties) {
-        addHookProperties(graph, hookSpecItem, hookSpecItem.first.as<string>());
+        addHookProperties(graph, hookSpecItem.second, hookSpecItem.first.as<string>());
     }
 }
 

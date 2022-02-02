@@ -23,11 +23,11 @@ namespace PatternCapture {
     };
 
    class Hook : public virtual Dependency {
-        public:
-            virtual HookType getHookType() = 0;
+        public: virtual HookType getHookType() = 0;
             virtual void executeHook(const HookData &) { }
             virtual void* operator()(void *);
             virtual void* operator()(void *, std::map<std::string, std::string>);
+            virtual map<string, string> getSampleValues() { }
     };
 
 };

@@ -49,6 +49,7 @@ namespace PatternCapture {
         private:
             HookType hookType;
         public:
+            HttpRelayHook();
             HookType getHookType();
             void executeHook(const HookData&);
             string getId() const;

@@ -3,7 +3,7 @@
 
 using namespace PatternCapture;
 
-HookData :: HookData(const Node &node, const HookProperties &) : node(node), hookProperties(hookProperties) { }
+HookData :: HookData(const Node &node, const HookProperties &hookProperties) : node(node), hookProperties(hookProperties) { }
 
 void* Hook :: operator()(void *input) {
 

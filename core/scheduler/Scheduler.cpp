@@ -98,7 +98,11 @@ void Scheduler :: executeSingleNode(const Graph &graph, const vector<Hook*> &&ex
     void *dependencyResponse;
 
     for(auto beforeHook : executeBefore) {
-        HookData *hookData = new HookData(node, graph.hookProperties.find(beforeHook->getId())->second);
+        cout << "Graph Properties : " << graph.hookProperties.find(beforeHook->getId())->second;
+        cout << &(graph.hookProperties.find(beforeHook->getId())->second) << "\n";
+        HookProperties properties = graph.hookProperties.find(beforeHook->getId())->second;
+        HookData *hookData = new HookData(node, properties);
+        cout << hookData->hookProperties << "\n" << hookData << "\n";
         (*beforeHook)(hookData);
     }
 
@@ -136,11 +140,19 @@ void Scheduler :: executeOnCallHook(HookProperties &hookProperties) {
     callbackHookMutex.lock();
     cout << "Executing on call hook " << hookProperties << "\n";
     if((!hookProperties.hasProperty(HOOK_PROPERTY_NODE_ID))
-            || (!hookProperties.hasProperty(HOOK_PROPERTY_HOOK_NAME))) {
+            || (!hookProperties.hasProperty(HOOK_PROPERTY_HOOK_NAME)) ||
+            (graph.hookProperties.find(hookProperties[HOOK_PROPERTY_HOOK_NAME]) == graph.hookProperties.end())) {
         throw std::exception();
     }
     Node &node = graph.getNodeById(hookProperties[HOOK_PROPERTY_NODE_ID]);
+    HookProperties configuredProperties = graph.hookProperties.find(hookProperties[HOOK_PROPERTY_HOOK_NAME])->second;
+    for(const auto &property : configuredProperties.properties) {
+        hookProperties[property.first] = property.second;
+    }
+
     for(Hook *hook : executeOnCall) {
+        cout << "Executing on call hook " << hook->getId() << "\n";
+        cout << "Hook Properties\n" << hookProperties;
         HookData *hookData = new HookData(node, hookProperties);
         (*hook)(hookData);
     }

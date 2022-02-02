@@ -81,7 +81,7 @@ namespace PatternCapture {
   
   Node& Graph :: getNodeById(string id) const {
     if(nodeIdWiseMap.find(id) == nodeIdWiseMap.end()) {
-      throw new GraphParseException("Node with id " + id + " not found");
+      throw GraphParseException("Node with id " + id + " not found");
     }
     return *(nodeIdWiseMap.find(id)->second);
   }
@@ -99,7 +99,7 @@ namespace PatternCapture {
       out << "Hooks:\n";
       for(const auto &hookPropertiesPair : graph.hookProperties) {
           out << hookPropertiesPair.first << "\n";
-          out << hookPropertiesPair.second << "\n";
+          out << hookPropertiesPair.second;
       }
       out << "Graph Properties : \n";
       for(const auto &graphPropertyPair : graph.properties) {

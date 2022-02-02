@@ -28,7 +28,7 @@ target_link_libraries(CommonUtils boost_system boost_filesystem pthread)
 
 target_include_directories(PatternCapture PUBLIC "${PROJECT_BINARY_DIR}" )
 
-add_library(Hooks SHARED core/engine/hooks/Hooks.cpp)
+add_library(Hooks SHARED core/engine/hooks/Hooks.cpp core/engine/graphparser/GraphParser.cpp)
 
 add_subdirectory(Capture)
 

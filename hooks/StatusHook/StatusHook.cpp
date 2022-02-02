@@ -36,7 +36,7 @@ void StatusHook :: executeHook(const HookData &hookData) {
 
 
     statusMutex.lock();
-    currentlyExecutingDependencies.insert(hookData.node.dependency->getId());
+    currentlyExecutingDependencies.insert(hookData.node.id);
     statusMutex.unlock();
 }
 

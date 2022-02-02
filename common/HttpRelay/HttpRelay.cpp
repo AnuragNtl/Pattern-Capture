@@ -144,10 +144,11 @@ void HttpRelayDependency :: loadParams(map<string, string> &params) {
         path = params[PATH_KEY];
         if(path.size() == 0)
             path = "/";
-    }
+    } else {
 
-    url = params[URL_KEY];
-    extractHostPortPathFromUrl(url);
+        url = params[URL_KEY];
+        extractHostPortPathFromUrl(url);
+    }
 
     payload = params[PAYLOAD_KEY];
     
@@ -183,9 +184,14 @@ string HttpRelayHook :: getId() const {
 
 }
 
+HttpRelayHook :: HttpRelayHook() : hookType(HookType::EXECUTE_ON_CALL) { }
+
 void HttpRelayHook :: executeHook(const HookData &hookData) {
 
     const Node &node = hookData.node;
+    cout << "Hook Properties : \n";
+    cout << &hookData;
+    //TODO
     map<string, string> inputParams = hookData.hookProperties.properties;
 
     if(inputParams["hookType"] == "EXECUTE_BEFORE") {
