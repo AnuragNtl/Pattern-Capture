@@ -55,3 +55,8 @@ vector<string> getDependencyTypes() {
 }
 
 
+set<string> StatusHook :: getRequiredParameters() {
+    return {};
+}
+
+

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <set>
 #include <vector>
 #include <functional>
 
@@ -57,6 +58,7 @@ namespace PatternCapture {
           void setOnHookCall(function<void(const HookProperties &)> onHookCall) {
               this->onHookCall = onHookCall;
           }
+          virtual set<string> getRequiredParameters() { return {}; }
   };
 
   /*Dependency :: Dependency() : onHookCall([] (const HookProperties &) {})   { }

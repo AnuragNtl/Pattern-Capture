@@ -226,5 +226,8 @@ string HttpRelayDependency :: getId() const {
     return "httpRelayDependency";
 }
 
+set<string> HttpRelayHook :: getRequiredParameters() {
+    return { URL_KEY, HOST_KEY, PORT_KEY, PATH_KEY, VERB_KEY, PAYLOAD_KEY, HEADERS_KEY, HOOK_TYPE_KEY };
+}
 
 

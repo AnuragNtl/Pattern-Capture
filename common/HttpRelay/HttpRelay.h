@@ -53,6 +53,7 @@ namespace PatternCapture {
             HookType getHookType();
             void executeHook(const HookData&);
             string getId() const;
+            set<string> getRequiredParameters();
     };
 
 };

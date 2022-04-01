@@ -27,7 +27,7 @@ namespace PatternCapture {
             virtual void executeHook(const HookData &) { }
             virtual void* operator()(void *);
             virtual void* operator()(void *, std::map<std::string, std::string>);
-            virtual map<string, string> getSampleValues() { }
+            virtual map<string, string> getSampleValues() { return {}; }
     };
 
 };
