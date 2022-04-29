@@ -79,6 +79,7 @@ namespace PatternCapture {
   };
   extern map<DependencyKey, Dependency *> dependencyTypeWiseTable;
   Dependency* getDependency(string type, string id);
+  vector<Dependency*> filterDependenciesByType(string);
   void initialize();
   bool isValidLib(string libName);
   Dependency* loadDependencyFromFile(string fileName, string);

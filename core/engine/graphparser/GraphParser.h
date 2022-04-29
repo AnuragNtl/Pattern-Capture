@@ -8,7 +8,6 @@
 #include <set>
 #include <iostream>
 #include "Dependencies.h"
-#include "./core/engine/graphparser/schema/Schema.h"
 
 #define NATIVE_ENGINE "nativeEngine"
 
@@ -112,7 +111,6 @@ using namespace std;
     ostream& operator<<(ostream &out, const Node &node);
     ostream& operator<<(ostream &out, const HookProperties &);
     
-    SchemaProperties generateSchemaProperties(const Graph &graph);
   };
 
 #endif

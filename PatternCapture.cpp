@@ -24,8 +24,16 @@ int main(int argc, char *argv[]) {
   */
 
     string spec;
+    initialize();
     if(argc > 1) {
-        spec = getContents(std::ifstream(argv[1]));
+        if(string(argv[1]) != "-g") {
+            spec = getContents(std::ifstream(argv[1]));
+        }
+        else {
+            SchemaProperties schemaProperties = generateSchemaProperties();
+            cout << (string)schemaProperties << "\n";
+            return 0;
+        }
     } else {
         spec = getContents(std::move(cin));
     }
@@ -36,7 +44,6 @@ int main(int argc, char *argv[]) {
 
 void processGraph(string parser, string data) {
 
-    initialize();
     GraphParserFactory graphParserFactory;
     GraphParser *graphParser = graphParserFactory.getGraphParser(parser);
     Graph *graph = graphParser->parse(data.c_str());

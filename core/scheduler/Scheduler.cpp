@@ -160,3 +160,44 @@ void Scheduler :: executeOnCallHook(HookProperties &hookProperties) {
 }
 
 
+namespace PatternCapture {
+    SchemaProperties generateSchemaProperties() {
+
+
+
+        for(Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
+            ObjectProperties *hookProperties = new ObjectProperties;
+            hookProperties->description = "Hook";
+            set<string> params = hook->getRequiredParameters();
+            for(string param : params) {
+                hookProperties->properties[param] = PrimitiveTypeProperties.of(STRING);
+            }
+            
+        }
+
+        
+        //:::::::::::
+
+        SchemaProperties schemaProperties;
+        AnyOfProperties *anyOfProperties = new AnyOfProperties;
+        for(const auto &pair : dependencyTypeWiseTable) {
+            Dependency *dependency = pair.second;
+            set<string> requiredParameters = dependency->getRequiredParameters();
+            if(requiredParameters.size() == 0) {
+                continue;
+            }
+            ObjectProperties *properties = new ObjectProperties;
+            for(const auto &property : requiredParameters) {
+
+                PrimitiveTypeProperties *value = new PrimitiveTypeProperties;
+                value->type = STRING;
+                properties->properties[property] = value;
+            }
+            anyOfProperties->anyOf.push_back(properties);
+
+        }
+        schemaProperties.properties["value"] = anyOfProperties;
+        return schemaProperties;
+    } 
+}
+

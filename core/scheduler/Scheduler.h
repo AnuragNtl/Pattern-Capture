@@ -30,6 +30,7 @@ using namespace std;
 #include <thread>
 #include <future>
 #include <mutex>
+#include "./core/engine/graphparser/schema/SchemaProperties.h"
 
 using namespace PatternCapture;
 
@@ -53,6 +54,7 @@ namespace PatternCapture {
             void execute();
             void executeOnCallHook(HookProperties &hookProperties);
     };
+    extern SchemaProperties generateSchemaProperties();
 };
 
 #endif

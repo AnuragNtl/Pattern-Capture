@@ -7,6 +7,8 @@
 #include <vector>
 #include "../../../../StringSerializable.h"
 
+
+
 using namespace std;
 
 namespace PatternCapture {
@@ -20,6 +22,8 @@ namespace PatternCapture {
 
         private:
             SchemaTypeData();
+            void initializeSchemaTypes();
+            void initializePrimitiveSchemaTypes();
             void initialize();
             static SchemaTypeData *schemaTypeData;
             map<SchemaType, string> schemaType;
@@ -30,31 +34,24 @@ namespace PatternCapture {
             static SchemaTypeData* getSchemaTypeData();
     };
 
-    SchemaTypeData :: SchemaTypeData() {
-        initialize();
-    }
-
-    void SchemaTypeData :: initialize() {
-        const char *
-    }
 
     template<class E>
     class Schema {
-        protected:
-        virtual E getEntity() const = 0;
         public:
         operator string();
+        virtual E getEntity() const = 0;
         virtual ~Schema() { }
     };
 
     template<class E>
     struct AnyOf : public Schema<E> {
-        vector<Schema<E>> anyOf;
+        vector<Schema<E> *> anyOf;
     };
 
     template<class E>
     struct PrimitiveTypeSchema : public Schema<E> {
         PrimitiveSchemaDataType type;
+        static PrimitiveTypeSchema* of(PrimitiveSchemaDataType type);
     };
 
     template<class E>
@@ -64,17 +61,23 @@ namespace PatternCapture {
 
     template<class E>
     struct ObjectSchema : public Schema<E> {
-        map<string, Schema<E> > properties;
+        map<string, Schema<E> *> properties;
         string description;
     };
 
     template<class E>
     struct ArraySchema : public Schema<E> {
-        Schema<E> items;
+        vector<Schema<E> *> items;
     };
 
-    Schema :: operator string() {
+    template<class T>
+    Schema<T> :: operator string() {
         return (string)getEntity();
+    }
+
+    template<class T>
+    extern string getSchemaName(const T &schemaType) {
+        return SchemaTypeData::getSchemaTypeData()->getName(schemaType);
     }
 
     

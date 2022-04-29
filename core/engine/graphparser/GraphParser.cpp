@@ -171,17 +171,6 @@ namespace PatternCapture {
       return properties.find(id) != properties.end();
   }
 
-  SchemaProperties generateSchemaProperties(const Graph &graph) {
-      SchemaProperties schemaProperties;
-      for(const auto &pair : dependencyTypeWiseTable) {
-          Dependency *dependency = pair.second;
-          set<string> requiredParameters = dependency->getRequiredParameters();
-          requiredParameters
-          
-      }
-      return SchemaProperties();
-  }
-
 
   
 };

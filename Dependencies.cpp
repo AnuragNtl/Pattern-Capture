@@ -109,6 +109,17 @@ namespace PatternCapture {
       return dependencyTypeWiseTable[dependencyKey];
   }
 
+  vector<Dependency*> filterDependenciesByType(string type) {
+      vector<Dependency*> filteredDependencies;
+      for(map<DependencyKey, Dependency*> :: iterator it = dependencyTypeWiseTable.begin();
+              it != dependencyTypeWiseTable.end(); it++) {
+          if(it->first.dependencyName == type) {
+              filteredDependencies.push_back(it->second);
+          }
+      }
+      return filteredDependencies;
+  }
+
   bool dependencyExists(DependencyKey dependencyKey) {
       return dependencyTypeWiseTable.find(dependencyKey) != dependencyTypeWiseTable.end();
   }
