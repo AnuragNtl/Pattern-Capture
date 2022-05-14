@@ -30,8 +30,7 @@ void StatusHook :: printStatus(StatusHook *statusHook) {
         }
         statusHook->statusMutex.unlock();
     }
-}
-
+} 
 void StatusHook :: executeHook(const HookData &hookData) {
 
 

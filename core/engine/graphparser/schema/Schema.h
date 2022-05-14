@@ -46,12 +46,12 @@ namespace PatternCapture {
     template<class E>
     struct AnyOf : public Schema<E> {
         vector<Schema<E> *> anyOf;
+        //virtual ~AnyOf();
     };
 
     template<class E>
     struct PrimitiveTypeSchema : public Schema<E> {
         PrimitiveSchemaDataType type;
-        static PrimitiveTypeSchema* of(PrimitiveSchemaDataType type);
     };
 
     template<class E>
@@ -62,12 +62,14 @@ namespace PatternCapture {
     template<class E>
     struct ObjectSchema : public Schema<E> {
         map<string, Schema<E> *> properties;
+        //virtual ~ObjectSchema();
         string description;
     };
 
     template<class E>
     struct ArraySchema : public Schema<E> {
         vector<Schema<E> *> items;
+        virtual ~ArraySchema();
     };
 
     template<class T>
@@ -81,6 +83,12 @@ namespace PatternCapture {
     }
 
     
+    template<class E>
+        ArraySchema<E> :: ~ArraySchema() {
+            for(auto item : items) {
+                delete item;
+            }
+        }
 };
 
 

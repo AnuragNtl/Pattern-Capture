@@ -170,7 +170,9 @@ namespace PatternCapture {
             hookProperties->description = "Hook";
             set<string> params = hook->getRequiredParameters();
             for(string param : params) {
-                hookProperties->properties[param] = PrimitiveTypeProperties.of(STRING);
+                auto primitiveProperties = new PrimitiveTypeProperties;
+                primitiveProperties->type = STRING;
+                hookProperties->properties[param] = primitiveProperties;
             }
             
         }

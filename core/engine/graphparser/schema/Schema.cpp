@@ -44,11 +44,5 @@ namespace PatternCapture {
         return schemaTypeData->primitiveSchemaType[primitiveSchemaType];
     }
 
-    template<class E>
-    PrimitiveTypeSchema* PrimitiveTypeSchema<E> :: of(PrimitiveSchemaDataType type) {
-        PrimitiveTypeSchema<E> *schema = new PrimitiveTypeSchema<E>;
-        schema->type = type;
-        return schema;
-    }
 };
 
