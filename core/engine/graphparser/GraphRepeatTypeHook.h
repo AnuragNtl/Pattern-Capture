@@ -4,12 +4,6 @@
 
 #include "GraphParser.h"
 
-#define ONCE_VALUE "ONCE"
-#define CONTINUOUS_VALUE "CONTINUOUS"
-#define NODE_REPEAT_KEY "repeat"
-#define SCHEDULED_VALUE "SCHEDULED"
-#define REPEAT_TIMES_KEY "repeatTimes"
-#define SCHEDULE_KEY "schedule"
 
 using namespace PatternCapture;
 

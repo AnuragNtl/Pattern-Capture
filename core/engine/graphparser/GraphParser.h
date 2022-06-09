@@ -21,6 +21,12 @@
 #define HOOKS_PROPERTIES "hooksProperties"
 #define SCHEMA_PROPERTIES_ITEMS "items"
 #define SCHEMA_PROPERTIES_ENUM "enum"
+#define ONCE_VALUE "ONCE"
+#define CONTINUOUS_VALUE "CONTINUOUS"
+#define NODE_REPEAT_KEY "repeat"
+#define SCHEDULED_VALUE "SCHEDULED"
+#define REPEAT_TIMES_KEY "repeatTimes"
+#define SCHEDULE_KEY "schedule"
 
 
 #define DEFAULT_ENGINE NATIVE_ENGINE

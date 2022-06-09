@@ -22,6 +22,7 @@ namespace PatternCapture {
         public:
             GraphScheduler* getScheduler(const NodeRepeat &nodeRepeat) const;
             SchedulerFactory();
+            static vector<string> getSupportedValues();
     };
 
 };

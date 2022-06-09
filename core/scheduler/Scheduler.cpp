@@ -165,6 +165,7 @@ namespace PatternCapture {
 
 
 
+        AnyOfProperties *hooksProperties = new AnyOfProperties;
         for(Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
             ObjectProperties *hookProperties = new ObjectProperties;
             hookProperties->description = "Hook";
@@ -180,10 +181,24 @@ namespace PatternCapture {
         
         //:::::::::::
 
-        SchemaProperties schemaProperties;
-        AnyOfProperties *anyOfProperties = new AnyOfProperties;
+        ObjectProperties schemaProperties;
+        EnumTypeProperties *repeatProperties = new EnumTypeProperties;
+        repeatProperties->_enum = SchedulerFactory::getSupportedValues();
+        ObjectProperties *graphProperties = new ObjectProperties;
+        (*graphProperties)["repeat"] = repeatProperties;
+        schemaProperties["graphProperties"] = graphProperties;
+
+        AnyOfProperties *inputProperties = new AnyOfProperties;
+        EnumTypeProperties &dependencyIdProperties = *(new EnumTypeProperties);
+        EnumTypeProperties &dependencyTypeProperties = *(new EnumTypeProperties);
+        set<string> dependencyTypes;
         for(const auto &pair : dependencyTypeWiseTable) {
             Dependency *dependency = pair.second;
+            dependencyIdProperties << pair.first.dependencyId;
+            if(dependencyTypes.find(pair.first.dependencyName) == dependencyTypes.end()) {
+                dependencyTypeProperties << pair.first.dependencyName;
+                dependencyTypes.insert(pair.first.dependencyName);
+            }
             set<string> requiredParameters = dependency->getRequiredParameters();
             if(requiredParameters.size() == 0) {
                 continue;
@@ -193,12 +208,16 @@ namespace PatternCapture {
 
                 PrimitiveTypeProperties *value = new PrimitiveTypeProperties;
                 value->type = STRING;
-                properties->properties[property] = value;
+                (*properties)[property] = value;
             }
-            anyOfProperties->anyOf.push_back(properties);
+            inputProperties->anyOf.push_back(properties);
 
         }
-        schemaProperties.properties["value"] = anyOfProperties;
+        schemaProperties["inputParams"] = inputProperties;
+        schemaProperties["dependencyId"] = &dependencyIdProperties;
+        schemaProperties["dependencyType"] = &dependencyTypeProperties;
+        schemaProperties["hookProperties"] = hooksProperties;
+        schemaProperties["$ref"] = "#";
         return schemaProperties;
     } 
 }

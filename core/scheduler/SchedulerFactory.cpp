@@ -32,6 +32,10 @@ namespace PatternCapture {
     }
 
     map<NodeRepeat, GraphScheduler*> SchedulerFactory :: NODE_REPEAT_MAP = map<NodeRepeat, GraphScheduler*>();
+
+    vector<string> SchedulerFactory :: getSupportedValues() {
+        return {CONTINUOUS_VALUE, SCHEDULED_VALUE, ONCE_VALUE };
+    }
 };
 
 

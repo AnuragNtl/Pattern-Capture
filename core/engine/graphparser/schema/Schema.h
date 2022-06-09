@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <initializer_list>
 #include "../../../../StringSerializable.h"
 
 
@@ -57,6 +58,12 @@ namespace PatternCapture {
     template<class E>
     struct EnumTypeSchema : public Schema<E> {
         vector<string> _enum;
+        EnumTypeSchema() = default;
+        EnumTypeSchema(initializer_list<string>);
+        EnumTypeSchema<E>& operator<<(string item) {
+            _enum.push_back(item);
+            return *this;
+        }
     };
 
     template<class E>
@@ -64,6 +71,7 @@ namespace PatternCapture {
         map<string, Schema<E> *> properties;
         //virtual ~ObjectSchema();
         string description;
+        Schema<E>*& operator[](string key);
     };
 
     template<class E>
@@ -82,6 +90,11 @@ namespace PatternCapture {
         return SchemaTypeData::getSchemaTypeData()->getName(schemaType);
     }
 
+    template<class T>
+    Schema<T>*& ObjectSchema<T> :: operator[](string key) {
+        return this->properties[key];
+    }
+
     
     template<class E>
         ArraySchema<E> :: ~ArraySchema() {
@@ -89,6 +102,13 @@ namespace PatternCapture {
                 delete item;
             }
         }
+
+    template<class E>
+    EnumTypeSchema<E> :: EnumTypeSchema(initializer_list<string> items) {
+        for(string item : items) {
+            _enum.push_back(item);
+        }
+    }
 };
 
 
