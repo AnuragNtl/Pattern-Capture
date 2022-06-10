@@ -217,7 +217,9 @@ namespace PatternCapture {
         schemaProperties["dependencyId"] = &dependencyIdProperties;
         schemaProperties["dependencyType"] = &dependencyTypeProperties;
         schemaProperties["hookProperties"] = hooksProperties;
-        schemaProperties["$ref"] = "#";
+        ObjectProperties *deliversToNodes = new ObjectProperties;
+        deliversToNodes->ref = "#";
+        schemaProperties["deliversToNodes"] = deliversToNodes;
         return schemaProperties;
     } 
 }

@@ -12,6 +12,7 @@
 #define SCHEMA_ANY_OF "anyOf"
 #define SCHEMA_ENUM "enum"
 #define SCHEMA_ITEMS "items"
+#define SCHEMA_REF "$ref"
 
 using namespace std;
 

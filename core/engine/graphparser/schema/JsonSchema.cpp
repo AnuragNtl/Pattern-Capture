@@ -31,6 +31,9 @@ namespace PatternCapture {
             properties[propertyPair.first] = propertyPair.second->getEntity().data;
         }
         schema[SCHEMA_PROPERTIES] = properties;
+        if(!ref.empty()) {
+            schema[SCHEMA_REF] = ref;
+        }
 
         return JsonNode::wrap(schema);
     }

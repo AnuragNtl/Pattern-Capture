@@ -72,6 +72,7 @@ namespace PatternCapture {
         //virtual ~ObjectSchema();
         string description;
         Schema<E>*& operator[](string key);
+        string ref;
     };
 
     template<class E>
