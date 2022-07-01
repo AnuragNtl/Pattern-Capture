@@ -23,6 +23,11 @@ namespace PatternCapture {
 
         json schema;
 
+        if(!ref.empty()) {
+            schema[SCHEMA_REF] = ref;
+            return JsonNode::wrap(schema);
+        }
+
         schema[SCHEMA_TYPE] = getSchemaName(SchemaType::OBJECT);
 
         json properties;
@@ -31,9 +36,6 @@ namespace PatternCapture {
             properties[propertyPair.first] = propertyPair.second->getEntity().data;
         }
         schema[SCHEMA_PROPERTIES] = properties;
-        if(!ref.empty()) {
-            schema[SCHEMA_REF] = ref;
-        }
 
         return JsonNode::wrap(schema);
     }
@@ -58,11 +60,7 @@ namespace PatternCapture {
     JsonNode JsonArraySchema :: getEntity() const {
         json schema;
         schema[SCHEMA_TYPE] = getSchemaName(SchemaType::ARRAY);
-        json items;
-        for(const auto &item : this->items) {
-            items.push_back(item->getEntity().data);
-        }
-        items[SCHEMA_ITEMS] = items;
+        schema[SCHEMA_ITEMS] = this->items->getEntity().data;
         return JsonNode::wrap(schema);
     }
 

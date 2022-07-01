@@ -77,7 +77,8 @@ namespace PatternCapture {
 
     template<class E>
     struct ArraySchema : public Schema<E> {
-        vector<Schema<E> *> items;
+        Schema<E> *items;
+        string ref;
         virtual ~ArraySchema();
     };
 
@@ -99,9 +100,7 @@ namespace PatternCapture {
     
     template<class E>
         ArraySchema<E> :: ~ArraySchema() {
-            for(auto item : items) {
-                delete item;
-            }
+            delete items;
         }
 
     template<class E>
