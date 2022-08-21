@@ -161,11 +161,10 @@ void Scheduler :: executeOnCallHook(HookProperties &hookProperties) {
 
 
 namespace PatternCapture {
-    SchemaProperties generateSchemaProperties() {
+
+    AnyOfProperties generateSchemaProperties() {
 
 
-
-        AnyOfProperties *hooksProperties = new AnyOfProperties;
         for(Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
             ObjectProperties *hookProperties = new ObjectProperties;
             hookProperties->description = "Hook";
@@ -181,26 +180,30 @@ namespace PatternCapture {
         
         //:::::::::::
 
-        ObjectProperties schemaProperties;
-        EnumTypeProperties *repeatProperties = new EnumTypeProperties;
-        repeatProperties->_enum = SchedulerFactory::getSupportedValues();
-        ObjectProperties *graphProperties = new ObjectProperties;
-        (*graphProperties)["repeat"] = repeatProperties;
-        schemaProperties["graphProperties"] = graphProperties;
-
-        AnyOfProperties *inputProperties = new AnyOfProperties;
-        EnumTypeProperties &dependencyIdProperties = *(new EnumTypeProperties);
-        EnumTypeProperties &dependencyTypeProperties = *(new EnumTypeProperties);
-        set<string> dependencyTypes;
+        AnyOfProperties &schemaProperties = *(new AnyOfProperties);
+        vector<string> supportedValues = SchedulerFactory::getSupportedValues();
         for(const auto &pair : dependencyTypeWiseTable) {
+
+            AnyOfProperties *hooksProperties = new AnyOfProperties;
+            EnumTypeProperties *repeatProperties = new EnumTypeProperties;
+            repeatProperties->_enum = supportedValues;
+            ObjectProperties *graphProperties = new ObjectProperties;
+            (*graphProperties)["repeat"] = repeatProperties;
+            ObjectProperties &dependencyProperties = *(new ObjectProperties);
             Dependency *dependency = pair.second;
-            dependencyIdProperties << pair.first.dependencyId;
-            if(dependencyTypes.find(pair.first.dependencyName) == dependencyTypes.end()) {
-                dependencyTypeProperties << pair.first.dependencyName;
-                dependencyTypes.insert(pair.first.dependencyName);
-            }
+            dependencyProperties["dependencyId"] = new EnumTypeProperties {pair.first.dependencyId};
+            dependencyProperties["dependencyType"] = new EnumTypeProperties {pair.first.dependencyName};
+            dependencyProperties["graphProperties"] = graphProperties;
+            dependencyProperties["hookProperties"] = hooksProperties;
+            ArrayTypeProperties *deliversToNodes = new ArrayTypeProperties;
+            ObjectProperties *deliversToRef = new ObjectProperties;
+            deliversToRef->ref = "#";
+            deliversToNodes->items = deliversToRef;
+            dependencyProperties["deliversToNodes"] = deliversToNodes;
+            schemaProperties.anyOf.push_back(&dependencyProperties);
             set<string> requiredParameters = dependency->getRequiredParameters();
             if(requiredParameters.size() == 0) {
+                dependencyProperties["inputParams"] = new PrimitiveTypeProperties;
                 continue;
             }
             ObjectProperties *properties = new ObjectProperties;
@@ -210,19 +213,11 @@ namespace PatternCapture {
                 value->type = STRING;
                 (*properties)[property] = value;
             }
-            inputProperties->anyOf.push_back(properties);
-
+            dependencyProperties["inputParams"] = properties;
         }
-        schemaProperties["inputParams"] = inputProperties;
-        schemaProperties["dependencyId"] = &dependencyIdProperties;
-        schemaProperties["dependencyType"] = &dependencyTypeProperties;
-        schemaProperties["hookProperties"] = hooksProperties;
-        ArrayTypeProperties *deliversToNodes = new ArrayTypeProperties;
-        ObjectProperties *deliversToRef = new ObjectProperties;
-        deliversToRef->ref = "#";
-        deliversToNodes->items = deliversToRef;
-        schemaProperties["deliversToNodes"] = deliversToNodes;
+
         return schemaProperties;
+
     } 
 }
 

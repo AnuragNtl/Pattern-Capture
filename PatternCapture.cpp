@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
             spec = getContents(std::ifstream(argv[1]));
         }
         else {
-            SchemaProperties schemaProperties = generateSchemaProperties();
+            AnyOfProperties schemaProperties = generateSchemaProperties();
             cout << (string)schemaProperties << "\n";
             return 0;
         }

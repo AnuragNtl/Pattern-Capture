@@ -54,7 +54,7 @@ namespace PatternCapture {
             void execute();
             void executeOnCallHook(HookProperties &hookProperties);
     };
-    extern SchemaProperties generateSchemaProperties();
+    extern AnyOfProperties generateSchemaProperties();
 };
 
 #endif

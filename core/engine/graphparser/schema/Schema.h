@@ -47,7 +47,8 @@ namespace PatternCapture {
     template<class E>
     struct AnyOf : public Schema<E> {
         vector<Schema<E> *> anyOf;
-        //virtual ~AnyOf();
+        AnyOf<E>& withOption(Schema<E> &);
+        virtual ~AnyOf();
     };
 
     template<class E>
@@ -69,7 +70,7 @@ namespace PatternCapture {
     template<class E>
     struct ObjectSchema : public Schema<E> {
         map<string, Schema<E> *> properties;
-        //virtual ~ObjectSchema();
+        virtual ~ObjectSchema();
         string description;
         Schema<E>*& operator[](string key);
         string ref;
@@ -109,6 +110,22 @@ namespace PatternCapture {
             _enum.push_back(item);
         }
     }
+
+    template<class E>
+        AnyOf<E> :: ~AnyOf() {
+            for(Schema<E> *&schema : anyOf) {
+                delete schema;
+            }
+        }
+
+    template<class E>
+        ObjectSchema<E> :: ~ObjectSchema() {
+            for(auto &pair : properties) {
+                delete pair.second;
+            }
+        }
+    
+
 };
 
 

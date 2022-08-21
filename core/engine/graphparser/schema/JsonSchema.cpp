@@ -46,6 +46,8 @@ namespace PatternCapture {
         return JsonNode::wrap(schema);
     }
 
+    JsonEnumTypeSchema :: JsonEnumTypeSchema(initializer_list<string> values) : EnumTypeSchema(values) { }
+
     JsonNode JsonEnumTypeSchema :: getEntity() const {
         json schema;
         schema[SCHEMA_TYPE] = getSchemaName(PrimitiveSchemaDataType::STRING);

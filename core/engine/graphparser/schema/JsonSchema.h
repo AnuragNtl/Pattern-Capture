@@ -45,6 +45,8 @@ namespace PatternCapture {
 
     class JsonEnumTypeSchema : public EnumTypeSchema<JsonNode> {
         public:
+            JsonEnumTypeSchema() = default;
+            JsonEnumTypeSchema(initializer_list<string>);
             JsonNode getEntity() const;
     };
 
