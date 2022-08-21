@@ -162,10 +162,24 @@ void Scheduler :: executeOnCallHook(HookProperties &hookProperties) {
 
 namespace PatternCapture {
 
-    AnyOfProperties generateSchemaProperties() {
+    EnumTypeProperties* getRepeatProperties(vector<string> supportedValues) {
 
+            EnumTypeProperties *repeatProperties = new EnumTypeProperties;
+            repeatProperties->_enum = supportedValues;
+            return repeatProperties;
+    }
 
-        for(Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
+    ObjectProperties* getGraphProperties() {
+
+        ObjectProperties *graphProperties = new ObjectProperties;
+        (*graphProperties)["repeat"] = getRepeatProperties(SchedulerFactory::getSupportedValues());
+        return graphProperties;
+
+    }
+
+    ObjectProperties* getHooksProperties() {
+        ObjectProperties *hooksProperties = new ObjectProperties;
+        for (Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
             ObjectProperties *hookProperties = new ObjectProperties;
             hookProperties->description = "Hook";
             set<string> params = hook->getRequiredParameters();
@@ -174,32 +188,36 @@ namespace PatternCapture {
                 primitiveProperties->type = STRING;
                 hookProperties->properties[param] = primitiveProperties;
             }
-            
-        }
 
-        
-        //:::::::::::
+
+            (*hooksProperties)[hook->getId()] = hookProperties;
+        }
+        return hooksProperties;
+    }
+
+    ArrayTypeProperties* getDeliversToNodesProperties() {
+            ArrayTypeProperties *deliversToNodes = new ArrayTypeProperties;
+            ObjectProperties *deliversToRef = new ObjectProperties;
+            deliversToRef->ref = "#";
+            deliversToNodes->items = deliversToRef;
+            return deliversToNodes;
+    }
+
+
+    AnyOfProperties generateSchemaProperties() {
+
 
         AnyOfProperties &schemaProperties = *(new AnyOfProperties);
         vector<string> supportedValues = SchedulerFactory::getSupportedValues();
         for(const auto &pair : dependencyTypeWiseTable) {
 
-            AnyOfProperties *hooksProperties = new AnyOfProperties;
-            EnumTypeProperties *repeatProperties = new EnumTypeProperties;
-            repeatProperties->_enum = supportedValues;
-            ObjectProperties *graphProperties = new ObjectProperties;
-            (*graphProperties)["repeat"] = repeatProperties;
             ObjectProperties &dependencyProperties = *(new ObjectProperties);
             Dependency *dependency = pair.second;
             dependencyProperties["dependencyId"] = new EnumTypeProperties {pair.first.dependencyId};
             dependencyProperties["dependencyType"] = new EnumTypeProperties {pair.first.dependencyName};
-            dependencyProperties["graphProperties"] = graphProperties;
-            dependencyProperties["hookProperties"] = hooksProperties;
-            ArrayTypeProperties *deliversToNodes = new ArrayTypeProperties;
-            ObjectProperties *deliversToRef = new ObjectProperties;
-            deliversToRef->ref = "#";
-            deliversToNodes->items = deliversToRef;
-            dependencyProperties["deliversToNodes"] = deliversToNodes;
+            dependencyProperties["graphProperties"] = getGraphProperties();
+            dependencyProperties["hookProperties"] = getHooksProperties();
+            dependencyProperties["deliversToNodes"] = getDeliversToNodesProperties();
             schemaProperties.anyOf.push_back(&dependencyProperties);
             set<string> requiredParameters = dependency->getRequiredParameters();
             if(requiredParameters.size() == 0) {
