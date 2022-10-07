@@ -1,1 +1,0 @@
-{"properties":{"value":{"anyOf":[{"properties":{"VERB":{"type":"string"},"headers":{"type":"string"},"hookType":{"type":"string"},"host":{"type":"string"},"path":{"type":"string"},"payload":{"type":"string"},"port":{"type":"string"},"url":{"type":"string"}},"type":"object"}]}},"type":"object"}

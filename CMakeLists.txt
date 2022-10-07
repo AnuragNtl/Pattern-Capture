@@ -20,7 +20,7 @@ add_subdirectory(googletest)
 add_subdirectory(yaml-cpp)
 
 
-add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/scheduler/SchedulerFactory.cpp core/scheduler/ContinuousScheduler.cpp core/scheduler/OnceScheduler.cpp core/scheduler/CronScheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp core/scheduler/HookServer.cpp core/engine/graphparser/schema/Schema.cpp core/engine/graphparser/schema/JsonSchema.cpp ccronexpr/ccronexpr.c)
+add_executable(PatternCapture Dependencies.cpp PatternCapture.cpp core/engine/graphparser/GraphParser.cpp core/engine/graphparser/JsonGraphParser/JsonGraphParser.cpp core/engine/graphparser/YamlGraphParser/YamlGraphParser.cpp core/scheduler/Scheduler.cpp core/scheduler/SchedulerFactory.cpp core/scheduler/ContinuousScheduler.cpp core/scheduler/OnceScheduler.cpp core/scheduler/CronScheduler.cpp core/engine/graphparser/GraphParserFactory.cpp core/engine/hooks/Hooks.cpp core/scheduler/HookServer.cpp core/engine/graphparser/schema/Schema.cpp core/engine/graphparser/schema/JsonSchema.cpp core/scheduler/schemagen/SchemaGen.cpp ccronexpr/ccronexpr.c)
 
 
 target_link_libraries(PatternCapture boost_system boost_filesystem dl pthread CommonUtils yaml-cpp)

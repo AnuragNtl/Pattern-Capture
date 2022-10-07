@@ -5,8 +5,10 @@
 #include <thread>
 #include <future>
 #include <iostream>
+#include <map>
 #include "SchedulerFactory.h"
 #include "HookServer.h"
+#include "./schemagen/SchemaGen.h"
 
 using namespace std;
 
@@ -162,76 +164,22 @@ void Scheduler :: executeOnCallHook(HookProperties &hookProperties) {
 
 namespace PatternCapture {
 
-    EnumTypeProperties* getRepeatProperties(vector<string> supportedValues) {
-
-            EnumTypeProperties *repeatProperties = new EnumTypeProperties;
-            repeatProperties->_enum = supportedValues;
-            return repeatProperties;
-    }
-
-    ObjectProperties* getGraphProperties() {
-
-        ObjectProperties *graphProperties = new ObjectProperties;
-        (*graphProperties)["repeat"] = getRepeatProperties(SchedulerFactory::getSupportedValues());
-        return graphProperties;
-
-    }
-
-    ObjectProperties* getHooksProperties() {
-        ObjectProperties *hooksProperties = new ObjectProperties;
-        for (Dependency *hook : filterDependenciesByType(DEPENDENCY_TYPE_HOOKS)) {
-            ObjectProperties *hookProperties = new ObjectProperties;
-            hookProperties->description = "Hook";
-            set<string> params = hook->getRequiredParameters();
-            for(string param : params) {
-                auto primitiveProperties = new PrimitiveTypeProperties;
-                primitiveProperties->type = STRING;
-                hookProperties->properties[param] = primitiveProperties;
-            }
-
-
-            (*hooksProperties)[hook->getId()] = hookProperties;
-        }
-        return hooksProperties;
-    }
-
-    ArrayTypeProperties* getDeliversToNodesProperties() {
-            ArrayTypeProperties *deliversToNodes = new ArrayTypeProperties;
-            ObjectProperties *deliversToRef = new ObjectProperties;
-            deliversToRef->ref = "#";
-            deliversToNodes->items = deliversToRef;
-            return deliversToNodes;
-    }
-
 
     AnyOfProperties generateSchemaProperties() {
 
 
-        AnyOfProperties &schemaProperties = *(new AnyOfProperties);
+        AnyOfProperties schemaProperties;
         vector<string> supportedValues = SchedulerFactory::getSupportedValues();
-        for(const auto &pair : dependencyTypeWiseTable) {
-
-            ObjectProperties &dependencyProperties = *(new ObjectProperties);
-            Dependency *dependency = pair.second;
-            dependencyProperties["dependencyId"] = new EnumTypeProperties {pair.first.dependencyId};
-            dependencyProperties["dependencyType"] = new EnumTypeProperties {pair.first.dependencyName};
-            dependencyProperties["graphProperties"] = getGraphProperties();
-            dependencyProperties["hookProperties"] = getHooksProperties();
-            dependencyProperties["deliversToNodes"] = getDeliversToNodesProperties();
-            schemaProperties.anyOf.push_back(&dependencyProperties);
-            set<string> requiredParameters = dependency->getRequiredParameters();
-            if(requiredParameters.size() == 0) {
-                dependencyProperties["inputParams"] = new PrimitiveTypeProperties;
-                continue;
+        const map<string, function<Schema<SchemaContent>*(const SchemaGenDetails&)> > schemaGen = PatternCapture::getSchemaNodeGenerators();
+        for(const auto &dependencyPair : dependencyTypeWiseTable) {
+            ObjectProperties *baseProperties = new ObjectProperties;
+            PatternCapture::SchemaGenDetails genDetails(dependencyPair.first,
+                    dependencyPair.second,
+                    PatternCapture::SchedulerOptions(supportedValues));
+            for(const auto gen : schemaGen) {
+                (*baseProperties)[gen.first] = gen.second(genDetails);
             }
-            ObjectProperties *properties = new ObjectProperties;
-            for(const auto &property : requiredParameters) {
-
-                PrimitiveTypeProperties *value = new PrimitiveTypeProperties;
-                value->type = STRING;
-                (*properties)[property] = value;
-            }
-            dependencyProperties["inputParams"] = properties;
+            schemaProperties.anyOf.push_back(baseProperties);
         }
 
         return schemaProperties;

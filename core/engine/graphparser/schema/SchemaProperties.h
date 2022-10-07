@@ -16,7 +16,7 @@ namespace PatternCapture {
     typedef JsonPrimitiveTypeSchema PrimitiveTypeProperties;
     typedef JsonEnumTypeSchema EnumTypeProperties;
     typedef JsonArraySchema ArrayTypeProperties;
-
+    typedef JsonNode SchemaContent;
 };
 
 
