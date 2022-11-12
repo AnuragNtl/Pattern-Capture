@@ -5,6 +5,7 @@ namespace PatternCapture {
     BinCaptureData BinCapture :: capture(map<string, string> input) {
         std::string command = input[COMMAND_OPTION];
 
+
     }
 
 };
