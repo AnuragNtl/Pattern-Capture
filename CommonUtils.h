@@ -24,6 +24,14 @@ namespace PatternCapture {
   string readLink(string path);
   bool isNumeric(string);
   bool pathExists(string);
+
+  struct CommandOutput {
+      char *error, *output;
+      int errorLen, outputLen;
+      CommandOutput(char *, char *, int, int);
+  };
+
+  CommandOutput* getCommandOutput(string input, string command, bool binary = false);
 };
 #endif
 
