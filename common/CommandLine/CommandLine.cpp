@@ -16,7 +16,7 @@ string CommandLine :: getOutput(string input, map<string, string> inputParams) c
     if (inputParams.find("command") == inputParams.end()) {
         throw std::exception();
     }
-    CommandOutput *output = getCommandOutput(input, inputParams["command"]);
+    CommandOutput *output = getCommandOutput(input.c_str(), input.size(), inputParams["command"]);
     if (output->outputLen > 0) {
         cout << "Output " << string(output->output) << "\n";
         return string(output->output, output->outputLen);

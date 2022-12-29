@@ -71,12 +71,12 @@ bool pathExists(string path) {
 CommandOutput :: CommandOutput(char *output, char *err, int errorLen, int outputLen) :
     output(output), error(err), errorLen(errorLen), outputLen(outputLen) { }
 
-CommandOutput* getCommandOutput(string input, string command, bool binary) {
+CommandOutput* getCommandOutput(const char *input, size_t inputSize, string command, bool binary) {
     boost::process::ipstream outputPipe, errorPipe;
     boost::asio::io_service ios;
     boost::process::async_pipe inputPipe(ios);
     boost::process::child process(command, boost::process::std_in < inputPipe, boost::process::std_out > outputPipe, boost::process::std_err > errorPipe);
-    async_write(inputPipe, boost::process::buffer(input), [] (const boost::system::error_code &ec, std::size_t size) {});
+    async_write(inputPipe, boost::asio::buffer(input, inputSize * sizeof(const char)), [] (const boost::system::error_code &ec, std::size_t size) {});
     inputPipe.close();
     process.wait();
     cout << "::\n";

@@ -31,7 +31,7 @@ namespace PatternCapture {
       CommandOutput(char *, char *, int, int);
   };
 
-  CommandOutput* getCommandOutput(string input, string command, bool binary = false);
+  CommandOutput* getCommandOutput(const char *input, size_t inputSize, string command, bool binary = false);
 };
 #endif
 
