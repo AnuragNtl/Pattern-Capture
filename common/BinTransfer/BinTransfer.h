@@ -8,25 +8,15 @@
 #include <vector>
 #include "../Common.h"
 #include "../../StringSerializable.h"
+#include "../../CommonUtils.h"
 
     // bin -> string
     // string -> bin
     // bin -> bin 
     // string -> string
-    struct BinData : public StringSerializable {
-        private:
-            void assign(std::string);
-        public:
-        char *data;
-        int length;
-        BinData& operator=(std::string);
-        BinData();
-        BinData(std::string);
-        operator std::string();
-    };
 
-    class BinTransfer : public CommonDependency<BinData, BinData> {
-        BinData getOutput(BinData, std::map<std::string, std::string>) const;
+    class BinTransfer : public CommonDependency<PatternCapture::BinData, PatternCapture::BinData> {
+        PatternCapture::BinData getOutput(PatternCapture::BinData, std::map<std::string, std::string>) const;
         string getId() const;
     };
 

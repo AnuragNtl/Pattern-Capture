@@ -9,6 +9,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "StringSerializable.h"
+
 using namespace std;
 using namespace boost::filesystem;
 
@@ -32,6 +34,18 @@ namespace PatternCapture {
   };
 
   CommandOutput* getCommandOutput(const char *input, size_t inputSize, string command, bool binary = false);
+
+  struct BinData : public StringSerializable {
+      private:
+          void assign(std::string);
+      public:
+          char *data;
+          int length;
+          BinData& operator=(std::string);
+          BinData();
+          BinData(std::string);
+          operator std::string();
+  };
 };
 #endif
 

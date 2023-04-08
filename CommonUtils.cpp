@@ -99,6 +99,29 @@ CommandOutput* getCommandOutput(const char *input, size_t inputSize, string comm
     return new CommandOutput(outputData, errorData, error.size(), output.size());
 }
 
+void BinData :: assign(std::string details) {
+    cout << "BinData::\n";
+    const char *content = details.c_str();
+    this->data = new char[details.size() + 1];
+    this->length = details.size();
+    memcpy(this->data, content, this->length * sizeof(char));
+}
+
+BinData :: BinData() { }
+
+BinData :: BinData(std::string details) {
+    assign(details);
+}
+
+BinData& BinData :: operator=(std::string details) {
+    assign(details);
+    return *this;
+}
+
+BinData :: operator std::string() {
+    data[this->length] = '\0';
+    return std::string(data);
+}
 };
 
 

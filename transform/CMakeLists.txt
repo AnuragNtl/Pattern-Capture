@@ -1,3 +1,4 @@
 add_subdirectory(JsonPickerTransform)
 add_subdirectory(ToJsonTransform)
 add_subdirectory(ToJsonPickerTransform)
+add_subdirectory(BinTransform)
